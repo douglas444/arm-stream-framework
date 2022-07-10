@@ -9,13 +9,13 @@
   </parent>
 
   <artifactId>arm-stream-gui</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>arm-stream-gui</name>
+  <name>ARM-Stream GUI</name>
 
   <dependencies>
   </dependencies>
 
   <build>
+    <finalName>arm-stream-gui</finalName>
     <plugins>
     </plugins>
   </build>

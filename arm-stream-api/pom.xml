@@ -9,8 +9,7 @@
   </parent>
 
   <artifactId>arm-stream-api</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>arm-stream-api</name>
+  <name>ARM-Stream Application Programming Interface</name>
 
   <dependencies>
   </dependencies>

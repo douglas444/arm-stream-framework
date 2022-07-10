@@ -9,13 +9,13 @@
   </parent>
 
   <artifactId>arm-stream-cli</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>arm-stream-cli</name>
+  <name>ARM-Stream Command Line Interface</name>
 
   <dependencies>
   </dependencies>
 
   <build>
+    <finalName>arm-stream-cli</finalName>
     <plugins>
     </plugins>
   </build>
