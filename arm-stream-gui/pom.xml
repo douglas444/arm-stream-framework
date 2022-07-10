@@ -12,6 +12,16 @@
   <name>ARM-Stream GUI</name>
 
   <dependencies>
+    <dependency>
+      <artifactId>arm-stream-api</artifactId>
+      <groupId>br.ufu.facom.armstream</groupId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <artifactId>arm-stream-core</artifactId>
+      <groupId>br.ufu.facom.armstream</groupId>
+      <version>${project.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
