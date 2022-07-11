@@ -1,6 +1,6 @@
 package br.ufu.facom.armstream.api;
 
-public interface ArmBaseClassifier {
+public interface BaseClassifier extends Parameterizable {
     boolean execute(final ArmInterceptor interceptor);
     void stop();
 }

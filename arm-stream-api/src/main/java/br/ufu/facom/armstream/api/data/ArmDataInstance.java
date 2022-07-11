@@ -1,4 +1,4 @@
-package br.ufu.facom.armstream.api;
+package br.ufu.facom.armstream.api.data;
 
 public interface ArmDataInstance {
 
