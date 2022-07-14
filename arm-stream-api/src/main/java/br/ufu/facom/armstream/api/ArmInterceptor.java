@@ -1,8 +1,8 @@
 package br.ufu.facom.armstream.api;
 
-import br.ufu.facom.armstream.api.data.InterceptionContext;
-import br.ufu.facom.armstream.api.data.InterceptionResult;
+import br.ufu.facom.armstream.api.data.ArmInterceptionContext;
+import br.ufu.facom.armstream.api.data.ArmInterceptionResult;
 
 public interface ArmInterceptor {
-    InterceptionResult intercept(InterceptionContext context);
+    ArmInterceptionResult intercept(ArmInterceptionContext context);
 }

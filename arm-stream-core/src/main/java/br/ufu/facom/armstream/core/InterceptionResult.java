@@ -2,17 +2,17 @@ package br.ufu.facom.armstream.core;
 
 import br.ufu.facom.armstream.api.data.ArmClusterCategory;
 import br.ufu.facom.armstream.api.data.ArmDataInstance;
-import br.ufu.facom.armstream.api.data.InterceptionResult;
+import br.ufu.facom.armstream.api.data.ArmInterceptionResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterceptionResultImpl implements InterceptionResult {
+public class InterceptionResult implements ArmInterceptionResult {
 
     private final ArmClusterCategory clusterCategory;
     private final List<ArmDataInstance> labeledDataInstances;
 
-    public InterceptionResultImpl(ArmClusterCategory clusterCategory, List<ArmDataInstance> labeledDataInstances) {
+    public InterceptionResult(ArmClusterCategory clusterCategory, List<ArmDataInstance> labeledDataInstances) {
         this.clusterCategory = clusterCategory;
         this.labeledDataInstances = labeledDataInstances;
     }
