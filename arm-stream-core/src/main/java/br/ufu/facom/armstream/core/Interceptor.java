@@ -10,13 +10,13 @@ import br.ufu.facom.armstream.api.data.ArmInterceptionResult;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InterceptorImpl implements ArmInterceptor {
+public class Interceptor implements ArmInterceptor {
 
     private final MetaCategorizer metaCategorizer;
     private final ActiveCategorizer activeCategorizer;
     private final List<InterceptionLog> logs;
 
-    public InterceptorImpl(final MetaCategorizer metaCategorizer, final ActiveCategorizer activeCategorizer) {
+    public Interceptor(final MetaCategorizer metaCategorizer, final ActiveCategorizer activeCategorizer) {
         this.metaCategorizer = metaCategorizer;
         this.activeCategorizer = activeCategorizer;
         this.logs = new ArrayList<>();
