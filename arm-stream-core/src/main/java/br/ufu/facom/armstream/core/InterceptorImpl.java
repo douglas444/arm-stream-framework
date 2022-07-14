@@ -3,9 +3,9 @@ package br.ufu.facom.armstream.core;
 import br.ufu.facom.armstream.api.ActiveCategorizer;
 import br.ufu.facom.armstream.api.data.ArmClusterCategory;
 import br.ufu.facom.armstream.api.MetaCategorizer;
-import br.ufu.facom.armstream.api.data.InterceptionResult;
 import br.ufu.facom.armstream.api.data.InterceptionContext;
 import br.ufu.facom.armstream.api.ArmInterceptor;
+import br.ufu.facom.armstream.api.data.InterceptionResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class InterceptorImpl implements ArmInterceptor {
 
         if (metaPrediction == basePrediction) {
             activePrediction = null;
-            interceptionResult = new InterceptionResult(metaPrediction, null);
+            interceptionResult = new InterceptionResultImpl(metaPrediction, null);
 
         } else {
             interceptionResult = this.activeCategorizer.categorize(context);
