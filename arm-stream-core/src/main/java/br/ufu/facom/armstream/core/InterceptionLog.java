@@ -2,14 +2,14 @@ package br.ufu.facom.armstream.core;
 
 import br.ufu.facom.armstream.api.ArmClusterCategory;
 
-public class InterceptionLog {
+class InterceptionLog {
 
     private final ArmClusterCategory trueCategory;
     private final ArmClusterCategory basePrediction;
     private final ArmClusterCategory metaPrediction;
     private final ArmClusterCategory activePrediction;
 
-    public InterceptionLog(ArmClusterCategory trueCategory,
+    InterceptionLog(ArmClusterCategory trueCategory,
                            ArmClusterCategory predictedByBaseCategorizer,
                            ArmClusterCategory predictedByMetaCategorizer,
                            ArmClusterCategory predictedByActiveCategorizer) {
@@ -20,19 +20,19 @@ public class InterceptionLog {
         this.activePrediction = predictedByActiveCategorizer;
     }
 
-    public ArmClusterCategory getTrueCategory() {
+    ArmClusterCategory getTrueCategory() {
         return trueCategory;
     }
 
-    public ArmClusterCategory getBasePrediction() {
+    ArmClusterCategory getBasePrediction() {
         return basePrediction;
     }
 
-    public ArmClusterCategory getMetaPrediction() {
+    ArmClusterCategory getMetaPrediction() {
         return metaPrediction;
     }
 
-    public ArmClusterCategory getActivePrediction() {
+    ArmClusterCategory getActivePrediction() {
         return activePrediction;
     }
 

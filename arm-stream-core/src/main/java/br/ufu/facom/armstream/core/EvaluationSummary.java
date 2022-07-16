@@ -37,7 +37,7 @@ public class EvaluationSummary {
     private final int uncorruptedNovelty;
     private final int uncorruptedKnown;
 
-    public EvaluationSummary(final List<InterceptionLog> logs) {
+    EvaluationSummary(final List<InterceptionLog> logs) {
 
         if (logs.isEmpty()) {
             throw new IllegalArgumentException("Cannot build evaluation summary. No interception log was registered.");
@@ -317,8 +317,8 @@ public class EvaluationSummary {
 
     public LinkedHashMap<String, Double> getStatisticByName() {
         final LinkedHashMap<String, Double> statisticsByName = new LinkedHashMap<>();
-        statisticsByName.put("# Known", calculateNumberOfInterceptedTrueKnown());
-        statisticsByName.put("# Novelty", calculateNumberOfInterceptedTrueNovelties());
+        statisticsByName.put("# Total known", calculateNumberOfInterceptedTrueKnown());
+        statisticsByName.put("# Total novelty", calculateNumberOfInterceptedTrueNovelties());
         statisticsByName.put("# Queried known", calculateNumberOfQueriedTrueKnown());
         statisticsByName.put("# Queried novelty", calculateNumberOfQueriedTrueNovelties());
         statisticsByName.put("Base-categorizer CSe", calculateBaseCategorizerSensitivity());

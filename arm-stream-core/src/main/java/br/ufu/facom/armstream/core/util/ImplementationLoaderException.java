@@ -1,4 +1,4 @@
-package br.ufu.facom.armstream.core.infra;
+package br.ufu.facom.armstream.core.util;
 
 public class ImplementationLoaderException extends Exception {
 

@@ -1,4 +1,4 @@
-package br.ufu.facom.armstream.core.infra;
+package br.ufu.facom.armstream.core.util;
 
 import br.ufu.facom.armstream.api.ArmActiveCategorizer;
 import br.ufu.facom.armstream.api.ArmBaseClassifier;
@@ -10,13 +10,14 @@ import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+
+import static java.text.MessageFormat.format;
 
 public class ImplementationLoader {
 
@@ -27,15 +28,15 @@ public class ImplementationLoader {
     public static final String NO_IMPLEMENTATION_FOUND_FOR_INTERFACE =
             "No implementation with a default constructor was found for interface {0}";
 
-    public static HashMap<Class<?>, HashMap<String, Object>> load(final File[] classpathArray)
+    public static HashMap<Class<?>, HashMap<String, Class<?>>> load(final File[] classpathArray)
             throws ImplementationLoaderException {
 
         final URLClassLoader classLoader = buildClassLoader(classpathArray);
-        final HashMap<Class<?>, HashMap<String, Object>> instancesMapByClass = new HashMap<>();
+        final HashMap<Class<?>, HashMap<String, Class<?>>> classMapByInterface = new HashMap<>();
 
-        instancesMapByClass.put(ArmBaseClassifier.class, new HashMap<>());
-        instancesMapByClass.put(ArmMetaCategorizer.class, new HashMap<>());
-        instancesMapByClass.put(ArmActiveCategorizer.class, new HashMap<>());
+        classMapByInterface.put(ArmBaseClassifier.class, new HashMap<>());
+        classMapByInterface.put(ArmMetaCategorizer.class, new HashMap<>());
+        classMapByInterface.put(ArmActiveCategorizer.class, new HashMap<>());
 
         for (final File classpath : classpathArray) {
 
@@ -55,65 +56,52 @@ public class ImplementationLoader {
                 final List<String> classesNames = discoverClasses(file);
                 for (String className : classesNames) {
 
-                    final Class<?> classReference;
+                    final Class<?> clazz;
                     try {
-                        classReference = classLoader.loadClass(className);
+                        clazz = classLoader.loadClass(className);
                     } catch (NoClassDefFoundError | ClassNotFoundException e) {
-                        throw new ImplementationLoaderException(
-                                MessageFormat.format(ERROR_LOADING_CLASS, className), e);
+                        throw new ImplementationLoaderException(format(ERROR_LOADING_CLASS, className), e);
                     }
 
                     try {
-                        DependencyFinder.getDependencies(classReference);
+                        DependencyFinder.getDependencies(clazz);
                     } catch (Exception e) {
-                        throw new ImplementationLoaderException(
-                                MessageFormat.format(ERROR_LOADING_CLASS, className), e);
+                        throw new ImplementationLoaderException( format(ERROR_LOADING_CLASS, className), e);
                     }
 
                     final Object instance;
-
                     try {
-                        Constructor<?> constructor = classReference.getConstructor();
+                        Constructor<?> constructor = clazz.getConstructor();
                         instance = constructor.newInstance();
                     } catch (Exception e) {
                         continue;
                     } catch (NoClassDefFoundError e) {
-                        throw new ImplementationLoaderException(
-                                MessageFormat.format(ERROR_LOADING_CLASS, className), e);
+                        throw new ImplementationLoaderException(format(ERROR_LOADING_CLASS, className), e);
                     }
 
                     if (instance instanceof ArmBaseClassifier) {
-
-                        instancesMapByClass.get(ArmBaseClassifier.class)
-                                .put(instance.getClass().getSimpleName(), instance);
-
+                        classMapByInterface.get(ArmBaseClassifier.class).put(clazz.getSimpleName(), clazz);
                     } else if (instance instanceof ArmMetaCategorizer) {
-
-                        instancesMapByClass.get(ArmMetaCategorizer.class)
-                                .put(instance.getClass().getSimpleName(), instance);
-
+                        classMapByInterface.get(ArmMetaCategorizer.class).put(clazz.getSimpleName(), clazz);
                     } else if (instance instanceof ArmActiveCategorizer) {
-
-                        instancesMapByClass.get(ArmActiveCategorizer.class)
-                                .put(instance.getClass().getSimpleName(), instance);
-
+                        classMapByInterface.get(ArmActiveCategorizer.class).put(clazz.getSimpleName(), clazz);
                     }
 
                 }
             }
         }
 
-        if (instancesMapByClass.get(ArmBaseClassifier.class).isEmpty()) {
+        if (classMapByInterface.get(ArmBaseClassifier.class).isEmpty()) {
             throw new ImplementationLoaderException(
-                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmBaseClassifier.class.getName()));
+                    format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmBaseClassifier.class.getName()));
         }
-        if (instancesMapByClass.get(ArmMetaCategorizer.class).isEmpty()) {
+        if (classMapByInterface.get(ArmMetaCategorizer.class).isEmpty()) {
             throw new ImplementationLoaderException(
-                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmMetaCategorizer.class.getName()));
+                    format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmMetaCategorizer.class.getName()));
         }
-        if (instancesMapByClass.get(ArmActiveCategorizer.class).isEmpty()) {
+        if (classMapByInterface.get(ArmActiveCategorizer.class).isEmpty()) {
             throw new ImplementationLoaderException(
-                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmActiveCategorizer.class.getName()));
+                    format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmActiveCategorizer.class.getName()));
         }
 
         try {
@@ -121,7 +109,8 @@ public class ImplementationLoader {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return instancesMapByClass;
+
+        return classMapByInterface;
 
     }
 
@@ -137,7 +126,7 @@ public class ImplementationLoader {
                     urls.add(new URL(toJarPath(classpath.getAbsolutePath())));
                 } catch (MalformedURLException e) {
                     throw new ImplementationLoaderException(
-                            MessageFormat.format(ERROR_LOADING_JAR, classpath.getAbsolutePath()), e);
+                            format(ERROR_LOADING_JAR, classpath.getAbsolutePath()), e);
                 }
 
             } else if (classpath.isDirectory()) {
@@ -146,7 +135,7 @@ public class ImplementationLoader {
                     urls.add(classpath.toURI().toURL());
                 } catch (MalformedURLException e) {
                     throw new ImplementationLoaderException(
-                            MessageFormat.format(ERROR_LOADING_DIRECTORY, classpath.getAbsolutePath()), e);
+                            format(ERROR_LOADING_DIRECTORY, classpath.getAbsolutePath()), e);
                 }
 
                 final File[] files = classpath.listFiles();
@@ -161,7 +150,7 @@ public class ImplementationLoader {
                         urls.add(new URL(toJarPath(jarPath)));
                     } catch (MalformedURLException e) {
                         throw new ImplementationLoaderException(
-                                MessageFormat.format(ERROR_LOADING_JAR, classpath.getAbsolutePath()), e);
+                                format(ERROR_LOADING_JAR, classpath.getAbsolutePath()), e);
                     }
                 }
             }
@@ -246,8 +235,7 @@ public class ImplementationLoader {
             try {
                 discoverClassesInJar(new JarFile(root), classesNames);
             } catch (IOException e) {
-                throw new ImplementationLoaderException(
-                        MessageFormat.format(ERROR_READING_FILE, root.getAbsolutePath()), e);
+                throw new ImplementationLoaderException(format(ERROR_READING_FILE, root.getAbsolutePath()), e);
             }
 
         } else if (root.getName().endsWith(".class")) {
