@@ -10,6 +10,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+// This class contain the method getDependencies proposed by @Holger in an answer to this stackoverflow question:
+// https://stackoverflow.com/questions/19862866/find-java-class-dependencies-at-runtime
+// The version contemplated here is the one edited in Mar 11, 2021 at 14:18 by @mjs.
 class DependencyFinder {
 
     private static final String ERROR_FINDING_DEPENDENCIES = "Error finding {0}.class dependencies";
