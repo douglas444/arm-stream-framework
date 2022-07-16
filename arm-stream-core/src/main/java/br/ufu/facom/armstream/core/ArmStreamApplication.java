@@ -49,7 +49,9 @@ public class ArmStreamApplication {
 
         final ArmInterceptor interceptor = (context) -> {
 
-            final ArmClusterCategory trueCategory = Oracle.calculateTrueCategory(context.getClusterDataInstances());
+            final ArmClusterCategory trueCategory = Oracle.calculateTrueCategory(context.getClusterDataInstances(),
+                    context.getDataClassesSummary());
+
             final ArmClusterCategory basePrediction = context.getPredictedCategory();
             final ArmClusterCategory metaPrediction = this.metaCategorizer.categorize(context);
             final ArmClusterCategory activePrediction;
