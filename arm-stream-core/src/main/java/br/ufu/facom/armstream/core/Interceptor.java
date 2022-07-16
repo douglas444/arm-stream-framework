@@ -1,24 +1,24 @@
 package br.ufu.facom.armstream.core;
 
-import br.ufu.facom.armstream.api.ActiveCategorizer;
-import br.ufu.facom.armstream.api.data.ArmClusterCategory;
-import br.ufu.facom.armstream.api.MetaCategorizer;
-import br.ufu.facom.armstream.api.data.ArmInterceptionContext;
+import br.ufu.facom.armstream.api.ArmActiveCategorizer;
+import br.ufu.facom.armstream.api.ArmClusterCategory;
+import br.ufu.facom.armstream.api.ArmMetaCategorizer;
+import br.ufu.facom.armstream.api.ArmInterceptionContext;
 import br.ufu.facom.armstream.api.ArmInterceptor;
-import br.ufu.facom.armstream.api.data.ArmInterceptionResult;
+import br.ufu.facom.armstream.api.ArmInterceptionResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Interceptor implements ArmInterceptor {
 
-    private final MetaCategorizer metaCategorizer;
-    private final ActiveCategorizer activeCategorizer;
+    private final ArmMetaCategorizer armMetaCategorizer;
+    private final ArmActiveCategorizer armActiveCategorizer;
     private final List<InterceptionLog> logs;
 
-    public Interceptor(final MetaCategorizer metaCategorizer, final ActiveCategorizer activeCategorizer) {
-        this.metaCategorizer = metaCategorizer;
-        this.activeCategorizer = activeCategorizer;
+    public Interceptor(final ArmMetaCategorizer armMetaCategorizer, final ArmActiveCategorizer armActiveCategorizer) {
+        this.armMetaCategorizer = armMetaCategorizer;
+        this.armActiveCategorizer = armActiveCategorizer;
         this.logs = new ArrayList<>();
     }
 
@@ -29,7 +29,7 @@ public class Interceptor implements ArmInterceptor {
 
         final ArmClusterCategory trueCategory = Oracle.calculateTrueCategory(context.getClusterDataInstances());
         final ArmClusterCategory basePrediction = context.getPredictedCategory();
-        final ArmClusterCategory metaPrediction = this.metaCategorizer.categorize(context);
+        final ArmClusterCategory metaPrediction = this.armMetaCategorizer.categorize(context);
         final ArmClusterCategory activePrediction;
         final ArmInterceptionResult armInterceptionResult;
 
@@ -38,7 +38,7 @@ public class Interceptor implements ArmInterceptor {
             armInterceptionResult = new InterceptionResult(metaPrediction, null);
 
         } else {
-            armInterceptionResult = this.activeCategorizer.categorize(context);
+            armInterceptionResult = this.armActiveCategorizer.categorize(context);
             activePrediction = armInterceptionResult.getPrediction();
 
         }

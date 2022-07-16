@@ -1,8 +1,8 @@
 package br.ufu.facom.armstream.core.infra;
 
-import br.ufu.facom.armstream.api.ActiveCategorizer;
+import br.ufu.facom.armstream.api.ArmActiveCategorizer;
 import br.ufu.facom.armstream.api.ArmBaseClassifier;
-import br.ufu.facom.armstream.api.MetaCategorizer;
+import br.ufu.facom.armstream.api.ArmMetaCategorizer;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,8 +34,8 @@ public class ImplementationLoader {
         final HashMap<Class<?>, HashMap<String, Object>> instancesMapByClass = new HashMap<>();
 
         instancesMapByClass.put(ArmBaseClassifier.class, new HashMap<>());
-        instancesMapByClass.put(MetaCategorizer.class, new HashMap<>());
-        instancesMapByClass.put(ActiveCategorizer.class, new HashMap<>());
+        instancesMapByClass.put(ArmMetaCategorizer.class, new HashMap<>());
+        instancesMapByClass.put(ArmActiveCategorizer.class, new HashMap<>());
 
         for (final File classpath : classpathArray) {
 
@@ -87,14 +87,14 @@ public class ImplementationLoader {
                         instancesMapByClass.get(ArmBaseClassifier.class)
                                 .put(instance.getClass().getSimpleName(), instance);
 
-                    } else if (instance instanceof MetaCategorizer) {
+                    } else if (instance instanceof ArmMetaCategorizer) {
 
-                        instancesMapByClass.get(MetaCategorizer.class)
+                        instancesMapByClass.get(ArmMetaCategorizer.class)
                                 .put(instance.getClass().getSimpleName(), instance);
 
-                    } else if (instance instanceof ActiveCategorizer) {
+                    } else if (instance instanceof ArmActiveCategorizer) {
 
-                        instancesMapByClass.get(ActiveCategorizer.class)
+                        instancesMapByClass.get(ArmActiveCategorizer.class)
                                 .put(instance.getClass().getSimpleName(), instance);
 
                     }
@@ -107,13 +107,13 @@ public class ImplementationLoader {
             throw new ImplementationLoaderException(
                     MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmBaseClassifier.class.getName()));
         }
-        if (instancesMapByClass.get(MetaCategorizer.class).isEmpty()) {
+        if (instancesMapByClass.get(ArmMetaCategorizer.class).isEmpty()) {
             throw new ImplementationLoaderException(
-                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, MetaCategorizer.class.getName()));
+                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmMetaCategorizer.class.getName()));
         }
-        if (instancesMapByClass.get(ActiveCategorizer.class).isEmpty()) {
+        if (instancesMapByClass.get(ArmActiveCategorizer.class).isEmpty()) {
             throw new ImplementationLoaderException(
-                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ActiveCategorizer.class.getName()));
+                    MessageFormat.format(NO_IMPLEMENTATION_FOUND_FOR_INTERFACE, ArmActiveCategorizer.class.getName()));
         }
 
         try {

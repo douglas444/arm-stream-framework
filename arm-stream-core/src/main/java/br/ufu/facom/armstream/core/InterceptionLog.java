@@ -1,6 +1,6 @@
 package br.ufu.facom.armstream.core;
 
-import br.ufu.facom.armstream.api.data.ArmClusterCategory;
+import br.ufu.facom.armstream.api.ArmClusterCategory;
 
 public class InterceptionLog {
 

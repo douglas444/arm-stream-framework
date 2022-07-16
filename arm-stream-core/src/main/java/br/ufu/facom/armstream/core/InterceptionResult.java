@@ -1,8 +1,8 @@
 package br.ufu.facom.armstream.core;
 
-import br.ufu.facom.armstream.api.data.ArmClusterCategory;
-import br.ufu.facom.armstream.api.data.ArmDataInstance;
-import br.ufu.facom.armstream.api.data.ArmInterceptionResult;
+import br.ufu.facom.armstream.api.ArmClusterCategory;
+import br.ufu.facom.armstream.api.ArmDataInstance;
+import br.ufu.facom.armstream.api.ArmInterceptionResult;
 
 import java.util.ArrayList;
 import java.util.List;

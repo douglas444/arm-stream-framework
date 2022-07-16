@@ -1,4 +1,4 @@
-package br.ufu.facom.armstream.api.data;
+package br.ufu.facom.armstream.api;
 
 public interface ArmClusterSummary {
 
