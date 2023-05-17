@@ -1,7 +1,7 @@
 package br.ufu.facom.armstream.ref.minas.armstream;
 
-import br.ufu.facom.armstream.ref.minas.MicroCluster;
 import br.ufu.facom.armstream.api.datastructure.ArmClusterSummary;
+import br.ufu.facom.armstream.ref.minas.MicroCluster;
 
 public class ArmClusterSummaryImpl implements ArmClusterSummary {
 

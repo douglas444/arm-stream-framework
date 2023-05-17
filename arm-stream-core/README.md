@@ -1,8 +1,8 @@
 # ARM-Stream Core
 
-This subproject contains the classes required to integrate, run and evaluate base classifiers, 
+This subproject contains the classes required to integrate, run and evaluate base classifiers,
 meta-categorizers and active-categorizers implemented using the [Arm-Stream API](./../arm-stream-api/README.md).
-Two integration types are available: loose and tight integration. Examples on how to use the ARM-Stream Core can be 
+Two integration types are available: loose and tight integration. Examples on how to use the ARM-Stream Core can be
 found at the [Arm-Stream Reference Experiments](./../arm-stream-exp/README.md) subproject.
 
 ## Maven Dependencies

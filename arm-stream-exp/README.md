@@ -1,7 +1,10 @@
 # ARM-Stream Reference Experiments
 
-This subproject uses the [reference implementations](./../arm-stream-impl) to provide examples of how to configure and perform experiments using the framework. Instructions on how to execute the experiments can found at the 
-[README.md of the parent project](./../README.md). The parameter configurations used in the experiments are available in this [class](./src/main/java/br/ufu/facom/armstream/exp/workspace/ExperimentWorkspace.java). The datasets used in the experiments can be found [here](./src/main/resources).
+This subproject uses the [reference implementations](./../arm-stream-impl) to provide examples of how to configure and
+perform experiments using the framework. Instructions on how to execute the experiments can be found at the
+[README.md of the parent project](./../README.md). The parameter configurations used in the experiments are available in
+this [class](./src/main/java/br/ufu/facom/armstream/exp/workspace/ExperimentWorkspace.java). The datasets used in the
+experiments can be found [here](./src/main/resources).
 
 ## Maven Dependencies
 

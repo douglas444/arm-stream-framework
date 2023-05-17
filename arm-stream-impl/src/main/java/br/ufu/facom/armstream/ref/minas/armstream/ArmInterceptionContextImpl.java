@@ -1,12 +1,12 @@
 package br.ufu.facom.armstream.ref.minas.armstream;
 
-import br.ufu.facom.armstream.ref.minas.MicroCluster;
-import br.ufu.facom.armstream.ref.minas.MicroClusterCategory;
-import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 import br.ufu.facom.armstream.api.datastructure.ArmClusterCategory;
 import br.ufu.facom.armstream.api.datastructure.ArmClusterSummary;
 import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptionContext;
+import br.ufu.facom.armstream.ref.minas.MicroCluster;
+import br.ufu.facom.armstream.ref.minas.MicroClusterCategory;
+import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +19,20 @@ public class ArmInterceptionContextImpl implements ArmInterceptionContext {
 
     private final ArmClusterSummary clusterSummary;
     private final List<ArmDataInstance> clusterDataInstances;
-    private ArmClusterCategory predictedCategory;
+    private final ArmClusterCategory predictedCategory;
     private final List<ArmClusterSummary> dataClassesSummary;
 
 
     public ArmInterceptionContextImpl(final MicroCluster targetMicroCluster,
                                       final List<Sample> samples,
                                       final List<MicroCluster> decisionModelMicroClusters,
-                                      final List<MicroCluster> sleepMemoryMicroClusters) {
+                                      final List<MicroCluster> sleepMemoryMicroClusters,
+                                      final MicroClusterCategory predictedCategory) {
 
         this.clusterSummary = new ArmClusterSummaryImpl(targetMicroCluster);
         this.clusterDataInstances = samples.stream().map(ArmDataInstanceImpl::new).collect(Collectors.toList());
         this.dataClassesSummary = new ArrayList<>();
+        this.predictedCategory = predictedCategory == MicroClusterCategory.KNOWN ? KNOWN : NOVELTY;
 
         decisionModelMicroClusters
                 .stream()
@@ -65,10 +67,6 @@ public class ArmInterceptionContextImpl implements ArmInterceptionContext {
     @Override
     public List<ArmClusterSummary> getDataClassesSummary() {
         return this.dataClassesSummary;
-    }
-
-    public void setPredictedCategory(final MicroClusterCategory predictedCategory) {
-        this.predictedCategory = predictedCategory == MicroClusterCategory.KNOWN ? KNOWN : NOVELTY;
     }
 
 }

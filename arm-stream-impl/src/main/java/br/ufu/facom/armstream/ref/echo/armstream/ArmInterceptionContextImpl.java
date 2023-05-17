@@ -1,13 +1,13 @@
 package br.ufu.facom.armstream.ref.echo.armstream;
 
-import br.ufu.facom.armstream.ref.echo.ImpurityBasedCluster;
-import br.ufu.facom.armstream.ref.echo.Model;
-import br.ufu.facom.armstream.ref.util.datastructures.Cluster;
-import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 import br.ufu.facom.armstream.api.datastructure.ArmClusterCategory;
 import br.ufu.facom.armstream.api.datastructure.ArmClusterSummary;
 import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptionContext;
+import br.ufu.facom.armstream.ref.echo.ImpurityBasedCluster;
+import br.ufu.facom.armstream.ref.echo.Model;
+import br.ufu.facom.armstream.ref.util.datastructures.Cluster;
+import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 
 import java.util.List;
 import java.util.Set;

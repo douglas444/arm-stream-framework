@@ -7,7 +7,7 @@ import br.ufu.facom.armstream.core.ArmStreamException;
 import br.ufu.facom.armstream.core.evaluation.EvaluationSummary;
 import br.ufu.facom.armstream.exp.util.FileUtil;
 import br.ufu.facom.armstream.ref.categorizers.active.Dummy;
-import br.ufu.facom.armstream.ref.categorizers.meta.BayesErrorCategorizer;
+import br.ufu.facom.armstream.ref.categorizers.meta.GroupedErrorEstimateCategorizer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -20,7 +20,7 @@ import java.util.List;
 public class ThresholdFactorAnalysis {
 
     public static void executeWithLooseIntegration(final ArmBaseClassifier baseClassifier,
-                                                   final BayesErrorCategorizer[] refCategorizers,
+                                                   final GroupedErrorEstimateCategorizer[] refCategorizers,
                                                    final String outputDestination,
                                                    final String outputFileName)
             throws ArmStreamException, FileNotFoundException {
@@ -29,7 +29,7 @@ public class ThresholdFactorAnalysis {
         final int totalAxisTicks = (int) (1 / increment);
         final int totalOfCategorizers = refCategorizers.length * totalAxisTicks;
 
-        final BayesErrorCategorizer[] categorizers = new BayesErrorCategorizer[refCategorizers.length * totalAxisTicks];
+        final GroupedErrorEstimateCategorizer[] categorizers = new GroupedErrorEstimateCategorizer[refCategorizers.length * totalAxisTicks];
         final double[] thresholdFactors = new double[totalAxisTicks];
 
         for (int i = 0; i < totalOfCategorizers; i += refCategorizers.length) {
@@ -77,7 +77,7 @@ public class ThresholdFactorAnalysis {
     public static void saveThresholdFactorAnalysisToFile(final String destination,
                                                          final String fileName,
                                                          final ArmBaseClassifier baseClassifier,
-                                                         final BayesErrorCategorizer[] bayesErrorCategorizers,
+                                                         final GroupedErrorEstimateCategorizer[] groupedErrorCategorizers,
                                                          final double[] thresholdFactors,
                                                          final double[][] sensitivities,
                                                          final double[][] specificities) throws FileNotFoundException {
@@ -88,15 +88,15 @@ public class ThresholdFactorAnalysis {
         root.put("baseClassifierClassName", baseClassifier.getClass().getName());
         root.putPOJO("baseClassifierFields", baseClassifier);
 
-        final ArrayNode bayesErrorCategorizersLevel = root.withArray("bayesErrorCategorizers");
+        final ArrayNode groupedErrorCategorizersLevel = root.withArray("groupedErrorCategorizers");
 
-        for (int i = 0; i < bayesErrorCategorizers.length; ++i) {
+        for (int i = 0; i < groupedErrorCategorizers.length; ++i) {
 
-            final ObjectNode bayesCategorizerRoot = mapper.createObjectNode();
-            bayesCategorizerRoot.put("bayesErrorCategorizerClassName", bayesErrorCategorizers[i].getClass().getName());
-            bayesCategorizerRoot.putPOJO("bayesErrorCategorizerFields", bayesErrorCategorizers[i]);
+            final ObjectNode groupedErrorCategorizerRoot = mapper.createObjectNode();
+            groupedErrorCategorizerRoot.put("groupedErrorCategorizerClassName", groupedErrorCategorizers[i].getClass().getName());
+            groupedErrorCategorizerRoot.putPOJO("groupedErrorCategorizerFields", groupedErrorCategorizers[i]);
 
-            final ArrayNode results = bayesCategorizerRoot.withArray("results");
+            final ArrayNode results = groupedErrorCategorizerRoot.withArray("results");
 
             for (int j = 0; j < thresholdFactors.length; ++j) {
 
@@ -107,7 +107,7 @@ public class ThresholdFactorAnalysis {
                 results.add(result);
             }
 
-            bayesErrorCategorizersLevel.add(bayesCategorizerRoot);
+            groupedErrorCategorizersLevel.add(groupedErrorCategorizerRoot);
         }
 
         FileUtil.writeToFile(root.toPrettyString(), destination, fileName);

@@ -90,7 +90,7 @@ public class Model {
         final double purity = closestPseudoPoint.calculatePurity();
 
         return (this.accuracyAssociationCorrelation * association + this.accuracyPurityCorrelation * purity) /
-                (this.accuracyAssociationCorrelation + this.accuracyPurityCorrelation) ;
+                (this.accuracyAssociationCorrelation + this.accuracyPurityCorrelation);
     }
 
     private static double calculateAssociation(final Sample sample, final PseudoPoint closestPseudoPoint) {

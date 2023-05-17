@@ -2,7 +2,7 @@ package br.ufu.facom.armstream.ref.categorizers.meta;
 
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptionContext;
 
-public class NNAR extends BayesErrorCategorizer {
+public class NNAR extends GroupedErrorEstimateCategorizer {
 
     public NNAR() {
         super(0.8, 1);

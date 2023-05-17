@@ -30,6 +30,7 @@ class Classification {
         this.explained = explained;
         this.novelty = novelty;
     }
+
     public static List<Double> getConfidenceList(final List<Classification> classifications) {
         return classifications.stream()
                 .map(Classification::getConfidence)

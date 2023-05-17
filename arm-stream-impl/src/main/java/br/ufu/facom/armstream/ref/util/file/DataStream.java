@@ -2,7 +2,10 @@ package br.ufu.facom.armstream.ref.util.file;
 
 import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;

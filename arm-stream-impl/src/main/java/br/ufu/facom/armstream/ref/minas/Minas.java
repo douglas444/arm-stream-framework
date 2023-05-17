@@ -1,5 +1,7 @@
 package br.ufu.facom.armstream.ref.minas;
 
+import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
+import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
 import br.ufu.facom.armstream.ref.minas.armstream.ArmInterceptionContextImpl;
 import br.ufu.facom.armstream.ref.minas.heater.Heater;
 import br.ufu.facom.armstream.ref.util.algorithms.KMeans;
@@ -8,8 +10,6 @@ import br.ufu.facom.armstream.ref.util.algorithms.Silhouette;
 import br.ufu.facom.armstream.ref.util.datastructures.Cluster;
 import br.ufu.facom.armstream.ref.util.datastructures.DynamicConfusionMatrix;
 import br.ufu.facom.armstream.ref.util.datastructures.Sample;
-import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
-import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -23,7 +23,7 @@ public class Minas {
 
     private final DecisionModel decisionModel;
     private final List<Sample> temporaryMemory;
-    private final DecisionModel sleepMemory ;
+    private final DecisionModel sleepMemory;
     private final DynamicConfusionMatrix confusionMatrix;
 
     private final int temporaryMemoryMaxSize;
@@ -62,7 +62,7 @@ public class Minas {
         this.sampleLifespan = sampleLifespan;
         this.noveltyDetectionNumberOfClusters = noveltyDetectionNumberOfClusters;
         this.random = new Random(randomGeneratorSeed);
-        
+
         this.armInterceptor = interceptor;
 
         this.heater = new Heater(heaterInitialBufferSize, heaterNumberOfClustersPerLabel, this.random);
@@ -165,9 +165,9 @@ public class Minas {
                     microCluster,
                     cluster.getSamples(),
                     this.decisionModel.getMicroClusters(),
-                    this.sleepMemory.getMicroClusters());
+                    this.sleepMemory.getMicroClusters(),
+                    predictedCategory);
 
-            context.setPredictedCategory(predictedCategory);
             labeledDataInstances.addAll(this.armInterceptor.intercept(context).getLabeledDataInstances());
         }
 

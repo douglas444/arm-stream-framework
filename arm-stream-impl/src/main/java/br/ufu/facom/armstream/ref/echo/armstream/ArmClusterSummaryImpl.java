@@ -1,9 +1,9 @@
 package br.ufu.facom.armstream.ref.echo.armstream;
 
+import br.ufu.facom.armstream.api.datastructure.ArmClusterSummary;
 import br.ufu.facom.armstream.ref.echo.ImpurityBasedCluster;
 import br.ufu.facom.armstream.ref.echo.PseudoPoint;
 import br.ufu.facom.armstream.ref.util.datastructures.Cluster;
-import br.ufu.facom.armstream.api.datastructure.ArmClusterSummary;
 
 public class ArmClusterSummaryImpl implements ArmClusterSummary {
 

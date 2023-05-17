@@ -15,11 +15,17 @@ import java.util.stream.Collectors;
 public abstract class AbstractInterceptor implements ArmInterceptor {
 
     protected final EvaluationSummary summary;
-    
+
     protected AbstractInterceptor(final EvaluationSummary summary) {
         this.summary = summary;
+
+        // Times with one-class data classes summary
+        this.summary.getBuffer().put("ONE_CLASS_MODEL", 0.0);
+
+        // True novelty clusters intercepted with one-class data classes summary
+        this.summary.getBuffer().put("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL", 0.0);
     }
-    
+
     @Override
     public ArmInterceptionResult intercept(final ArmInterceptionContext context) {
 
@@ -33,25 +39,31 @@ public abstract class AbstractInterceptor implements ArmInterceptor {
 
         }
 
+        final ArmClusterCategory trueCategory = calculateTrueCategory(
+                context.getClusterDataInstances(),
+                context.getDataClassesSummary());
+
         if (context.getDataClassesSummary()
                 .stream()
                 .map(ArmClusterSummary::getLabel)
                 .distinct()
                 .count() < 2) {
 
-            return new InterceptionResult(context.getPredictedCategory());
-        }
+            double oneClassModelCount = this.summary.getBuffer().get("ONE_CLASS_MODEL");
+            this.summary.getBuffer().put("ONE_CLASS_MODEL", oneClassModelCount + 1);
 
-        final ArmClusterCategory trueCategory = calculateTrueCategory(
-                context.getClusterDataInstances(),
-                context.getDataClassesSummary());
+            if (trueCategory == ArmClusterCategory.NOVELTY) {
+                double noveltyCount = this.summary.getBuffer().get("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL");
+                this.summary.getBuffer().put("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL", noveltyCount + 1);
+            }
+        }
 
         return this.intercept(context, trueCategory);
 
     }
 
     private static ArmClusterCategory calculateTrueCategory(final List<ArmDataInstance> clusterDataInstances,
-                                                           final List<ArmClusterSummary> dataClassesSummary) {
+                                                            final List<ArmClusterSummary> dataClassesSummary) {
 
         final Set<Integer> knownLabels = dataClassesSummary.stream()
                 .map(ArmClusterSummary::getLabel)
@@ -72,8 +84,8 @@ public abstract class AbstractInterceptor implements ArmInterceptor {
     public EvaluationSummary getSummary() {
         return this.summary;
     }
-    
+
     protected abstract ArmInterceptionResult intercept(ArmInterceptionContext context, ArmClusterCategory trueCategory);
-    
+
 
 }

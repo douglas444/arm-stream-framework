@@ -2,7 +2,7 @@ package br.ufu.facom.armstream.ref.categorizers.meta;
 
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptionContext;
 
-public class NDNCR extends BayesErrorCategorizer {
+public class NDNCR extends GroupedErrorEstimateCategorizer {
 
     public NDNCR() {
         super(0.9, 1);
@@ -20,7 +20,7 @@ public class NDNCR extends BayesErrorCategorizer {
                 this.dimensionality,
                 NextNeighbourClassifier.EUCLIDEAN_DISTANCE_WEIGHTED_BY_STDEV);
 
-        return  1 - classifier.classificationProbability(context.getClusterSummary().getCentroidAttributes());
+        return 1 - classifier.classificationProbability(context.getClusterSummary().getCentroidAttributes());
     }
 
 }

@@ -1,9 +1,9 @@
 package br.ufu.facom.armstream.ref.minas.armstream;
 
+import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
+import br.ufu.facom.armstream.api.modules.ArmBaseClassifier;
 import br.ufu.facom.armstream.ref.minas.Minas;
 import br.ufu.facom.armstream.ref.util.file.DataStream;
-import br.ufu.facom.armstream.api.modules.ArmBaseClassifier;
-import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
 
 import java.io.File;
 import java.io.IOException;
@@ -28,7 +28,7 @@ public class ArmMinas implements ArmBaseClassifier, Cloneable {
     private long randomGeneratorSeed = 0;
 
     @Override
-    public void run(final ArmInterceptor interceptor, final Consumer<HashMap<String, String>> peeker) 
+    public void run(final ArmInterceptor interceptor, final Consumer<HashMap<String, String>> peeker)
             throws IOException {
 
         final Minas minas = new Minas(

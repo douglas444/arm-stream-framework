@@ -8,6 +8,7 @@ import java.util.List;
 public interface ArmInterceptionResult {
 
     ArmClusterCategory getPrediction();
+
     List<ArmDataInstance> getLabeledDataInstances();
 
 }

@@ -5,12 +5,12 @@ import br.ufu.facom.armstream.api.datastructure.ArmClusterSummary;
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptionContext;
 import br.ufu.facom.armstream.api.modules.ArmMetaCategorizer;
 
-public abstract class BayesErrorCategorizer implements ArmMetaCategorizer, Cloneable {
+public abstract class GroupedErrorEstimateCategorizer implements ArmMetaCategorizer, Cloneable {
 
     protected double thresholdFactor;
     protected int dimensionality;
 
-    public BayesErrorCategorizer(final double thresholdFactor, final int dimensionality) {
+    public GroupedErrorEstimateCategorizer(final double thresholdFactor, final int dimensionality) {
         this.thresholdFactor = thresholdFactor;
         this.dimensionality = dimensionality;
     }
@@ -24,13 +24,21 @@ public abstract class BayesErrorCategorizer implements ArmMetaCategorizer, Clone
                 .distinct()
                 .count();
 
-        final double bayesErrorEstimation = calculateBayesErrorEstimation(context);
+        if (numberOfClasses == 0) {
+            return ArmClusterCategory.NOVELTY;
+        }
+
+        if (numberOfClasses == 1) {
+            return context.getPredictedCategory();
+        }
+
+        final double groupedErrorEstimate = calculateBayesErrorEstimation(context);
 
         final double minClassificationProbability = 1 / (double) numberOfClasses;
         final double maxClassificationError = 1 - minClassificationProbability;
         final double threshold = maxClassificationError * this.thresholdFactor;
 
-        if (bayesErrorEstimation > threshold) {
+        if (groupedErrorEstimate > threshold) {
             return ArmClusterCategory.NOVELTY;
         } else {
             return ArmClusterCategory.KNOWN;
@@ -38,9 +46,9 @@ public abstract class BayesErrorCategorizer implements ArmMetaCategorizer, Clone
     }
 
     @Override
-    public BayesErrorCategorizer clone() {
+    public GroupedErrorEstimateCategorizer clone() {
         try {
-            return (BayesErrorCategorizer) super.clone();
+            return (GroupedErrorEstimateCategorizer) super.clone();
         } catch (final CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -48,14 +56,14 @@ public abstract class BayesErrorCategorizer implements ArmMetaCategorizer, Clone
 
     protected abstract double calculateBayesErrorEstimation(ArmInterceptionContext context);
 
-    public BayesErrorCategorizer withThresholdFactor(final double thresholdFactor) {
-        final BayesErrorCategorizer clone = this.clone();
+    public GroupedErrorEstimateCategorizer withThresholdFactor(final double thresholdFactor) {
+        final GroupedErrorEstimateCategorizer clone = this.clone();
         clone.thresholdFactor = thresholdFactor;
         return clone;
     }
 
-    public BayesErrorCategorizer withDimensionality(final int dimensionality) {
-        final BayesErrorCategorizer clone = this.clone();
+    public GroupedErrorEstimateCategorizer withDimensionality(final int dimensionality) {
+        final GroupedErrorEstimateCategorizer clone = this.clone();
         clone.dimensionality = dimensionality;
         return clone;
     }

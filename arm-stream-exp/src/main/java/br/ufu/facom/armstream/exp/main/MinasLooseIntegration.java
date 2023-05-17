@@ -1,8 +1,8 @@
 package br.ufu.facom.armstream.exp.main;
 
+import br.ufu.facom.armstream.core.ArmStreamException;
 import br.ufu.facom.armstream.exp.experiments.IntegrationAnalysis;
 import br.ufu.facom.armstream.exp.workspace.ExperimentWorkspace;
-import br.ufu.facom.armstream.core.ArmStreamException;
 
 import java.io.FileNotFoundException;
 

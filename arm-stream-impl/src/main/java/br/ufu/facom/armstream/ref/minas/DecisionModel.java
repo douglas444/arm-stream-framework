@@ -70,7 +70,7 @@ class DecisionModel {
 
         final List<MicroCluster> inactiveMicroClusters = this.microClusters
                 .stream()
-                .filter(microCluster -> microCluster.getTimestamp()  < timestamp - lifespan)
+                .filter(microCluster -> microCluster.getTimestamp() < timestamp - lifespan)
                 .collect(Collectors.toList());
 
         this.microClusters.removeAll(inactiveMicroClusters);

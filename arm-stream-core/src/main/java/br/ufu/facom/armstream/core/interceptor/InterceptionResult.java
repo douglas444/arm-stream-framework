@@ -15,8 +15,12 @@ public class InterceptionResult implements ArmInterceptionResult {
         this.prediction = prediction;
     }
 
-    public ArmClusterCategory getPrediction() { return prediction; }
+    public ArmClusterCategory getPrediction() {
+        return prediction;
+    }
 
-    public List<ArmDataInstance> getLabeledDataInstances() { return Collections.emptyList(); }
+    public List<ArmDataInstance> getLabeledDataInstances() {
+        return Collections.emptyList();
+    }
 
 }

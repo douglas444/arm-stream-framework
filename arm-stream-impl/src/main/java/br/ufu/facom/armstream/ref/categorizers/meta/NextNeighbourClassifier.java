@@ -39,14 +39,6 @@ public class NextNeighbourClassifier {
 
     public double classificationProbability(final double[] x) {
 
-        if (this.knownLabels.isEmpty()) {
-            return 0;
-        }
-
-        if (this.knownLabels.size() == 1) {
-            return 1;
-        }
-
         final List<ArmClusterSummary> closestClusters = new ArrayList<>();
 
         this.knownLabels.forEach((knownLabel) -> {
@@ -59,23 +51,26 @@ public class NextNeighbourClassifier {
 
         });
 
-        final double n = Math.pow(1.0 / closestClusters
+        final Double distanceToClosest = closestClusters
                 .stream()
                 .map(cluster -> this.similarityFunction.apply(cluster, x))
                 .min(Double::compare)
-                .orElse(0.0), this.dimensionality);
+                .orElseThrow(() -> new IllegalStateException("Cannot calculate the classification probability if " +
+                        "there's no known classes"));
 
-        if (Double.isInfinite(n)) {
-            return 1;
+        if (distanceToClosest == 0) { // The distance to the closest is 0
+            return 1; // In this case we assume a classification probability of 1 so there's no division by zero below
         }
 
-        final double d = closestClusters
+        final double inverseDistanceToClosest = Math.pow(1.0 / distanceToClosest, this.dimensionality);
+
+        final double inverseDistanceSum = closestClusters
                 .stream()
                 .map(cluster -> this.similarityFunction.apply(cluster, x))
                 .map(value -> Math.pow(1.0 / value, this.dimensionality))
                 .reduce(0.0, Double::sum);
 
-        return n / d;
+        return inverseDistanceToClosest / inverseDistanceSum;
 
     }
 

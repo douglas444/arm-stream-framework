@@ -1,7 +1,7 @@
 package br.ufu.facom.armstream.ref.echo.armstream;
 
-import br.ufu.facom.armstream.api.modules.ArmBaseClassifier;
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
+import br.ufu.facom.armstream.api.modules.ArmBaseClassifier;
 import br.ufu.facom.armstream.ref.echo.Echo;
 import br.ufu.facom.armstream.ref.util.file.DataStream;
 

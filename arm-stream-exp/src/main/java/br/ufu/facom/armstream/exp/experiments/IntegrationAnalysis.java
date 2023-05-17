@@ -38,6 +38,12 @@ public class IntegrationAnalysis {
                 activeCategorizers,
                 Util.configurePeeker(baseClassifierPeekedData));
 
+        System.out.println("Interceptions with one-class data classes summary: "
+                + summary.getBuffer().get("ONE_CLASS_MODEL"));
+
+        System.out.println("True novelty clusters intercepted with one-class data classes summary: "
+                + summary.getBuffer().get("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL"));
+
         saveIntegrationReportToFile(
                 outputDestination,
                 integrationReportOutputFileName,
@@ -69,6 +75,12 @@ public class IntegrationAnalysis {
                 activeCategorizer,
                 Util.configurePeeker(baseClassifierPeekedData));
 
+        System.out.println("Interceptions with one-class data classes summary: "
+                + summary.getBuffer().get("ONE_CLASS_MODEL"));
+
+        System.out.println("True novelty clusters intercepted with one-class data classes summary: "
+                + summary.getBuffer().get("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL"));
+
         saveIntegrationReportToFile(
                 outputDestination,
                 integrationReportOutputFileName,
@@ -85,10 +97,9 @@ public class IntegrationAnalysis {
     }
 
 
-
     private static void saveBaseClassifierPeekedDataToFile(final String destination,
-                                                          final String fileName,
-                                                          final List<HashMap<String, String>> peekedData)
+                                                           final String fileName,
+                                                           final List<HashMap<String, String>> peekedData)
             throws FileNotFoundException {
 
         final ObjectMapper mapper = new ObjectMapper();
@@ -101,12 +112,12 @@ public class IntegrationAnalysis {
     }
 
     private static void saveIntegrationReportToFile(final String destination,
-                                                   final String fileName,
-                                                   final ArmBaseClassifier baseClassifier,
-                                                   final ArmMetaCategorizer[] metaCategorizers,
-                                                   final ArmActiveCategorizer[] activeCategorizers,
-                                                   final String integrationTypeFieldValue,
-                                                   final EvaluationSummary summary) throws FileNotFoundException {
+                                                    final String fileName,
+                                                    final ArmBaseClassifier baseClassifier,
+                                                    final ArmMetaCategorizer[] metaCategorizers,
+                                                    final ArmActiveCategorizer[] activeCategorizers,
+                                                    final String integrationTypeFieldValue,
+                                                    final EvaluationSummary summary) throws FileNotFoundException {
 
         final ObjectMapper mapper = new ObjectMapper();
         final ObjectNode baseCategorizerLevel = mapper.createObjectNode();

@@ -4,8 +4,8 @@ import br.ufu.facom.armstream.api.modules.ArmActiveCategorizer;
 import br.ufu.facom.armstream.api.modules.ArmBaseClassifier;
 import br.ufu.facom.armstream.api.modules.ArmMetaCategorizer;
 import br.ufu.facom.armstream.core.evaluation.EvaluationSummary;
-import br.ufu.facom.armstream.core.interceptor.LooseInterceptor;
 import br.ufu.facom.armstream.core.interceptor.AbstractInterceptor;
+import br.ufu.facom.armstream.core.interceptor.LooseInterceptor;
 import br.ufu.facom.armstream.core.interceptor.TightInterceptor;
 
 import java.util.HashMap;
@@ -18,7 +18,8 @@ public class ArmStream {
             final ArmMetaCategorizer[] metaCategorizers,
             final ArmActiveCategorizer[] activeCategorizers) throws ArmStreamException {
 
-        return run(baseClassifier, new LooseInterceptor(metaCategorizers, activeCategorizers), (properties) -> {});
+        return run(baseClassifier, new LooseInterceptor(metaCategorizers, activeCategorizers), (properties) -> {
+        });
     }
 
     public static EvaluationSummary runLooseIntegration(
@@ -35,7 +36,8 @@ public class ArmStream {
             final ArmMetaCategorizer metaCategorizer,
             final ArmActiveCategorizer activeCategorizer) throws ArmStreamException {
 
-        return run(baseClassifier, new TightInterceptor(metaCategorizer, activeCategorizer), (properties) -> {});
+        return run(baseClassifier, new TightInterceptor(metaCategorizer, activeCategorizer), (properties) -> {
+        });
     }
 
     public static EvaluationSummary runTightIntegration(

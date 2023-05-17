@@ -204,9 +204,9 @@ public class DynamicConfusionMatrix {
                     stringBuilder.append(String.format("|PN%6d", this.noveltyColumnIndexByLabel.get(matrix[i][j])));
                 } else if (i == 0 && j > this.knownColumnsCount) {
                     stringBuilder.append(String.format("|%1sUNKNOWN", ""));
-                } else if (j == 0 && i > this.knownColumnsCount){
+                } else if (j == 0 && i > this.knownColumnsCount) {
                     stringBuilder.append(String.format("|CN%6d", matrix[i][j]));
-                } else if (i == 0 || j == 0){
+                } else if (i == 0 || j == 0) {
                     stringBuilder.append(String.format("|CK%6d", matrix[i][j]));
                 } else {
                     stringBuilder.append(String.format("|  %6d", matrix[i][j]));
@@ -222,12 +222,12 @@ public class DynamicConfusionMatrix {
 
         final HashMap<Integer, List<Integer>> noveltyAssociationByRow = new HashMap<>();
 
-        for (final Integer noveltyColumnLabel: this.noveltyColumnLabels) {
+        for (final Integer noveltyColumnLabel : this.noveltyColumnLabels) {
 
             int max = 0;
             int label = -1;
 
-            for (final Integer rowLabel: this.rowLabels) {
+            for (final Integer rowLabel : this.rowLabels) {
                 final int row = this.rowIndexByLabel.get(rowLabel);
                 final int column = this.noveltyColumnIndexByLabel.get(noveltyColumnLabel);
                 if (this.noveltyColumnsMatrix.get(row).get(column) > max) {
@@ -270,7 +270,7 @@ public class DynamicConfusionMatrix {
         sum += novelties.stream()
                 .map(this.noveltyColumnIndexByLabel::get)
                 .map(noveltyIndex -> this.noveltyColumnsMatrix.get(rowIndex).get(noveltyIndex))
-                .reduce(0,  Integer::sum);
+                .reduce(0, Integer::sum);
 
         return sum;
 
@@ -301,14 +301,14 @@ public class DynamicConfusionMatrix {
                 .map(this.noveltyColumnIndexByLabel::get)
                 .map(noveltyIndex ->
 
-                    this.rowLabels.stream()
-                            .filter(rowLabel -> rowLabel != label)
-                            .map(this.rowIndexByLabel::get)
-                            .map(rowIndex -> this.noveltyColumnsMatrix.get(rowIndex).get(noveltyIndex))
-                            .reduce(0, Integer::sum)
+                        this.rowLabels.stream()
+                                .filter(rowLabel -> rowLabel != label)
+                                .map(this.rowIndexByLabel::get)
+                                .map(rowIndex -> this.noveltyColumnsMatrix.get(rowIndex).get(noveltyIndex))
+                                .reduce(0, Integer::sum)
 
                 )
-                .reduce(0,  Integer::sum);
+                .reduce(0, Integer::sum);
 
         return sum;
 

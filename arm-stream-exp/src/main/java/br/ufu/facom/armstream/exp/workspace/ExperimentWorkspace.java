@@ -5,6 +5,7 @@ import br.ufu.facom.armstream.api.modules.ArmMetaCategorizer;
 import br.ufu.facom.armstream.ref.categorizers.active.MKCN;
 import br.ufu.facom.armstream.ref.categorizers.active.MKR;
 import br.ufu.facom.armstream.ref.categorizers.meta.*;
+import br.ufu.facom.armstream.ref.cdscal.ArmCdscal;
 import br.ufu.facom.armstream.ref.echo.armstream.ArmEcho;
 import br.ufu.facom.armstream.ref.minas.armstream.ArmMinas;
 
@@ -16,7 +17,7 @@ public class ExperimentWorkspace {
 
     public final ArmMetaCategorizer[] metaCategorizers;
     public final ArmActiveCategorizer[] activeCategorizers;
-    public final BayesErrorCategorizer[] bayesErrorCategorizers;
+    public final GroupedErrorEstimateCategorizer[] groupedErrorCategorizers;
 
     public final ArmMinas minasMOA3;
     public final ArmMinas minasSynEDC;
@@ -27,6 +28,11 @@ public class ExperimentWorkspace {
     public final ArmEcho echoSynEDC;
     public final ArmEcho echoKDD99;
     public final ArmEcho echoCovtype;
+
+    public final ArmCdscal cdscalMOA3;
+    public final ArmCdscal cdscalSynEDC;
+    public final ArmCdscal cdscalCovtype;
+    public final ArmCdscal cdscalKDD99;
 
     public ExperimentWorkspace() throws FileNotFoundException {
 
@@ -42,11 +48,11 @@ public class ExperimentWorkspace {
         this.activeCategorizers[2] = new MKR().withK(1).withSeed(0);
         this.activeCategorizers[3] = new MKR().withK(3).withSeed(0);
 
-        this.bayesErrorCategorizers = new BayesErrorCategorizer[4];
-        this.bayesErrorCategorizers[0] = (BayesErrorCategorizer) this.metaCategorizers[0];
-        this.bayesErrorCategorizers[1] = (BayesErrorCategorizer) this.metaCategorizers[1];
-        this.bayesErrorCategorizers[2] = (BayesErrorCategorizer) this.metaCategorizers[2];
-        this.bayesErrorCategorizers[3] = (BayesErrorCategorizer) this.metaCategorizers[3];
+        this.groupedErrorCategorizers = new GroupedErrorEstimateCategorizer[4];
+        this.groupedErrorCategorizers[0] = (GroupedErrorEstimateCategorizer) this.metaCategorizers[0];
+        this.groupedErrorCategorizers[1] = (GroupedErrorEstimateCategorizer) this.metaCategorizers[1];
+        this.groupedErrorCategorizers[2] = (GroupedErrorEstimateCategorizer) this.metaCategorizers[2];
+        this.groupedErrorCategorizers[3] = (GroupedErrorEstimateCategorizer) this.metaCategorizers[3];
 
         final ArmMinas minas = new ArmMinas()
                 .withTemporaryMemoryMaxSize(2000)
@@ -116,12 +122,40 @@ public class ExperimentWorkspace {
                 .withConfidenceWindowMaxSize(9799)
                 .withChunkSize(9799);
 
-        this.echoCovtype = echo.clone()
+        this.echoCovtype = echo
                 .withDatasetFilePaths(getPathForResource("covtype-1.csv"),
                         getPathForResource("covtype-2.csv"),
                         getPathForResource("covtype-3.csv"))
                 .withConfidenceWindowMaxSize(9409)
                 .withChunkSize(9409);
+
+        final ArmCdscal armCdscal = new ArmCdscal()
+                .withRemoteBaseClassifierUrl("http://localhost:5000/start");
+
+        this.cdscalMOA3 = armCdscal
+                .withDatasetFileName("MOA3.csv")
+                .withModule("main_final_draft4")
+                .withNormalize(1)
+                .withBufferSize(2000);
+
+        this.cdscalSynEDC = armCdscal
+                .withDatasetFileName("SynEDC-1.csv;SynEDC-2.csv;SynEDC-3.csv")
+                .withModule("main_final_draft4")
+                .withNormalize(1)
+                .withBufferSize(1000);
+
+        this.cdscalKDD99 = armCdscal
+                .withDatasetFileName("kdd99.csv")
+                .withModule("main_final_draft4")
+                .withNormalize(1)
+                .withBufferSize(2000);
+
+        this.cdscalCovtype = armCdscal
+                .withDatasetFileName("covtype-1.csv;covtype-2.csv;covtype-3.csv")
+                .withModule("main_final_draft")
+                .withNormalize(1)
+                .withBufferSize(2000);
+
     }
 
 }

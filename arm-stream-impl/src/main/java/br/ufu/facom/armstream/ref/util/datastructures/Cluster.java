@@ -57,7 +57,9 @@ public class Cluster {
         return samples.size();
     }
 
-    public boolean isEmpty() {return samples.isEmpty();}
+    public boolean isEmpty() {
+        return samples.isEmpty();
+    }
 
     public List<Sample> getSamples() {
         return samples;

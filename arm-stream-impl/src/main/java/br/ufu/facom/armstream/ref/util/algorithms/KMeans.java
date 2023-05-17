@@ -35,7 +35,7 @@ public final class KMeans {
                     .map(Cluster::calculateCentroid)
                     .forEach(centroids::add);
 
-        } while(!oldCentroids.containsAll(centroids));
+        } while (!oldCentroids.containsAll(centroids));
 
         return clusters;
     }

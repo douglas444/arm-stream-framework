@@ -4,7 +4,9 @@ import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptionContext;
 import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Collectors;
 
 public class MKCN extends MajorityOf implements Cloneable {

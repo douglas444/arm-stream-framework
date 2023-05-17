@@ -22,13 +22,13 @@ public class EchoThresholdFactorAnalysis {
 
         ThresholdFactorAnalysis.executeWithLooseIntegration(
                 experimentWorkspace.echoMOA3,
-                experimentWorkspace.bayesErrorCategorizers,
+                experimentWorkspace.groupedErrorCategorizers,
                 outputDestination,
                 "echo_moa3_threshold_factor_analysis.json");
 
         ThresholdFactorAnalysis.executeWithLooseIntegration(
                 experimentWorkspace.echoCovtype,
-                experimentWorkspace.bayesErrorCategorizers,
+                experimentWorkspace.groupedErrorCategorizers,
                 outputDestination,
                 "echo_covtype_threshold_factor_analysis.json");
 

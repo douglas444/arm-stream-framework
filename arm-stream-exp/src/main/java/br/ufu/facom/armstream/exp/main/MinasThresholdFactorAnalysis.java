@@ -22,13 +22,13 @@ public class MinasThresholdFactorAnalysis {
 
         ThresholdFactorAnalysis.executeWithLooseIntegration(
                 experimentWorkspace.minasMOA3,
-                experimentWorkspace.bayesErrorCategorizers,
+                experimentWorkspace.groupedErrorCategorizers,
                 outputDestination,
                 "minas_moa3_threshold_factor_analysis.json");
 
         ThresholdFactorAnalysis.executeWithLooseIntegration(
                 experimentWorkspace.minasCovtype,
-                experimentWorkspace.bayesErrorCategorizers,
+                experimentWorkspace.groupedErrorCategorizers,
                 outputDestination,
                 "minas_covtype_threshold_factor_analysis.json");
 

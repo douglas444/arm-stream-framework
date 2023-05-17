@@ -1,7 +1,7 @@
 package br.ufu.facom.armstream.ref.echo.armstream;
 
-import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
+import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 
 public class ArmDataInstanceImpl implements ArmDataInstance {
 

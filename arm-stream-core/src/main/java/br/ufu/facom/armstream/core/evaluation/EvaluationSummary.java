@@ -2,9 +2,12 @@ package br.ufu.facom.armstream.core.evaluation;
 
 import br.ufu.facom.armstream.api.datastructure.ArmClusterCategory;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 public class EvaluationSummary {
+
+    private final HashMap<String, Double> buffer;
 
     private final CategorizationConfusionMatrix baseCategorizerConfusionMatrix;
 
@@ -19,6 +22,7 @@ public class EvaluationSummary {
 
     public EvaluationSummary(final int numberOfMetaCategorizers, final int numberOfActiveCategorizers) {
 
+        this.buffer = new HashMap<>();
         this.baseCategorizerConfusionMatrix = new CategorizationConfusionMatrix();
 
         this.numberOfMetaCategorizers = numberOfMetaCategorizers;
@@ -82,6 +86,11 @@ public class EvaluationSummary {
     }
 
     //Getters
+
+
+    public HashMap<String, Double> getBuffer() {
+        return buffer;
+    }
 
     public int getNumberOfMetaCategorizers() {
         return numberOfMetaCategorizers;

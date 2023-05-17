@@ -9,7 +9,7 @@ This subproject has no dependencies
 
 ## How to use it in a project as a _Maven_ dependency
 
-First you need to [install the framework](./../README.md) to your _Maven Local Repository_. 
+First you need to [install the framework](./../README.md) to your _Maven Local Repository_.
 
 Once you have installed the framework, import the _arm-stream-api_ at your
 _Maven_ project by adding the following dependency

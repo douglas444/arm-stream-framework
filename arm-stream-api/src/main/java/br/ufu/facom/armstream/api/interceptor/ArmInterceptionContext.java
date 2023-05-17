@@ -9,8 +9,11 @@ import java.util.List;
 public interface ArmInterceptionContext {
 
     ArmClusterSummary getClusterSummary();
+
     List<ArmDataInstance> getClusterDataInstances();
+
     ArmClusterCategory getPredictedCategory();
+
     List<ArmClusterSummary> getDataClassesSummary();
 
 }

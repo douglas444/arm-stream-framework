@@ -1,5 +1,6 @@
 package br.ufu.facom.armstream.ref.echo;
 
+import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
 import br.ufu.facom.armstream.ref.echo.armstream.ArmInterceptionContextImpl;
 import br.ufu.facom.armstream.ref.util.algorithms.KMeansPlusPlus;
 import br.ufu.facom.armstream.ref.util.algorithms.Silhouette;
@@ -7,7 +8,6 @@ import br.ufu.facom.armstream.ref.util.datastructures.Cluster;
 import br.ufu.facom.armstream.ref.util.datastructures.DynamicConfusionMatrix;
 import br.ufu.facom.armstream.ref.util.datastructures.Sample;
 import br.ufu.facom.armstream.ref.util.datastructures.SampleDistanceComparator;
-import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
 import org.apache.commons.math3.distribution.BetaDistribution;
 
 import java.util.*;

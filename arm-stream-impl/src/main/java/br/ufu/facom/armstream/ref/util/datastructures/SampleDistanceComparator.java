@@ -10,7 +10,8 @@ public class SampleDistanceComparator implements Comparator<Sample> {
         this.target = target;
     }
 
-    /** Compares the distances of the two samples passed as argument to
+    /**
+     * Compares the distances of the two samples passed as argument to
      * the target sample defined as a class attribute.
      *
      * @return Returns 0 if p1 and p2 have the same distance to the target
