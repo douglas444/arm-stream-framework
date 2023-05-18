@@ -25,7 +25,7 @@ ARM-Stream: Active Recovery of Miscategorizations in Clustering-Based Data Strea
 To build and install the project, execute the following command from the root directory of the project:
 
 ```
-.\mvnw clean install
+.\mvnw.cmd clean install
 ```
 
 ### How to run?
@@ -38,13 +38,13 @@ editing the `-Dexec.args` argument in the command line.
 #### _ARM-MINAS Loose Integration_
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasLooseIntegration" -D"exec.args"="output/minas_loose_integration"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasLooseIntegration" -D"exec.args"="output/minas_loose_integration"
 ```
 
 #### _ARM-ECHO Loose Integration_
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.EchoLooseIntegration" -D"exec.args"="output/echo_loose_integration"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.EchoLooseIntegration" -D"exec.args"="output/echo_loose_integration"
 ```
 
 #### _ARM-CDSCAL Loose Integration_
@@ -52,25 +52,25 @@ editing the `-Dexec.args` argument in the command line.
 Make sure that you have the [CDSC-AL](https://github.com/douglas444/arm-remote-cdsc-al) server running and then execute the command line bellow.
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.CdscalLooseIntegration" -D"exec.args"="output/cdscal_loose_integration"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.CdscalLooseIntegration" -D"exec.args"="output/cdscal_loose_integration"
 ```
 
 #### _ARM-MINAS Tight Integration_:
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasTightIntegration" -D"exec.args"="output/minas_tight_integration"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasTightIntegration" -D"exec.args"="output/minas_tight_integration"
 ```
 
 #### _ARM-MINAS Threshold Factor Analysis_:
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasThresholdFactorAnalysis" -D"exec.args"="output/minas_threshold_factor_analysis"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasThresholdFactorAnalysis" -D"exec.args"="output/minas_threshold_factor_analysis"
 ```
 
 #### _ARM-ECHO Threshold Factor Analysis_:
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.EchoThresholdFactorAnalysis" -D"exec.args"="output/echo_threshold_factor_analysis"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.EchoThresholdFactorAnalysis" -D"exec.args"="output/echo_threshold_factor_analysis"
 ```
 
 #### _ARM-CDSCAL Threshold Factor Analysis_:
@@ -78,7 +78,7 @@ Make sure that you have the [CDSC-AL](https://github.com/douglas444/arm-remote-c
 Make sure that you have the [CDSC-AL](https://github.com/douglas444/arm-remote-cdsc-al) server running and then execute the command line bellow.
 
 ```
-.\mvnw exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.CdscalThresholdFactorAnalysis" -D"exec.args"="output/cdscal_threshold_factor_analysis"
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.CdscalThresholdFactorAnalysis" -D"exec.args"="output/cdscal_threshold_factor_analysis"
 ```
 
 ### Where are the datasets used in the reference experiments?
