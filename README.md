@@ -25,7 +25,7 @@ ARM-Stream: Active Recovery of Miscategorizations in Clustering-Based Data Strea
 To build and install the project, execute the following command from the root directory of the project:
 
 ```
-.\mvnw.cmd clean install
+.\mvnw.cmd clean install -DskipTests
 ```
 
 ### How to run?
