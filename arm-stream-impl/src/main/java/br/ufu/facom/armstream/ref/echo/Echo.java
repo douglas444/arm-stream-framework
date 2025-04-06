@@ -30,7 +30,6 @@ public class Echo {
     private double totalUpdatesDurationInMillis;
     private double totalInterceptionsDurationInMillis;
     private int updatesCount;
-    private int interceptionCount;
 
     private final HashMap<Integer, StatElement> stat;
     private final List<Sample> filteredOutlierBuffer;
@@ -103,7 +102,6 @@ public class Echo {
         this.totalUpdatesDurationInMillis = 0;
         this.totalInterceptionsDurationInMillis = 0;
         this.updatesCount = 0;
-        this.interceptionCount = 0;
 
         this.stat = new HashMap<>();
         this.filteredOutlierBuffer = new ArrayList<>();
@@ -415,7 +413,6 @@ public class Echo {
 
                     final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                     this.totalInterceptionsDurationInMillis += interceptionDuration;
-                    ++this.interceptionCount;
 
                     if (result.getPrediction() == NOVELTY) {
                         this.addNovelty(cluster);
@@ -470,7 +467,6 @@ public class Echo {
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                 this.totalInterceptionsDurationInMillis += interceptionDuration;
-                ++this.interceptionCount;
 
                 if (result.getPrediction() == NOVELTY) {
                     this.addNovelty(cluster);
@@ -618,7 +614,6 @@ public class Echo {
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                 this.totalInterceptionsDurationInMillis += interceptionDuration;
-                ++this.interceptionCount;
 
                 if (result.getPrediction() == context.getPredictedCategory()) {
                     pseudoPoints.add(new PseudoPoint(cluster));
@@ -745,12 +740,8 @@ public class Echo {
         return this.totalUpdatesDurationInMillis / this.updatesCount;
     }
 
-    public double getAverageInterceptionDurationInMillis() {
-        return this.totalInterceptionsDurationInMillis / this.interceptionCount;
-    }
-
     public double getInterceptionAverageTimeOverhead() {
-        return this.getAverageInterceptionDurationInMillis() / this.getAverageUpdateDurationInMillis();
+        return this.totalInterceptionsDurationInMillis / this.totalUpdatesDurationInMillis;
     }
 
 }

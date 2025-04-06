@@ -24,7 +24,6 @@ public class Minas {
     private double totalUpdatesDurationInMillis;
     private double totalInterceptionsDurationInMillis;
     private int updatesCount;
-    private int interceptionCount;
 
     private final DecisionModel decisionModel;
     private final List<Sample> temporaryMemory;
@@ -185,7 +184,6 @@ public class Minas {
 
             final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
             this.totalInterceptionsDurationInMillis += interceptionDuration;
-            ++this.interceptionCount;
 
         }
 
@@ -330,12 +328,8 @@ public class Minas {
         return this.totalUpdatesDurationInMillis / this.updatesCount;
     }
 
-    public double getAverageInterceptionDurationInMillis() {
-        return this.totalInterceptionsDurationInMillis / this.interceptionCount;
-    }
-
     public double getInterceptionAverageTimeOverhead() {
-        return this.getAverageInterceptionDurationInMillis() / this.getAverageUpdateDurationInMillis();
+        return this.totalInterceptionsDurationInMillis / this.totalUpdatesDurationInMillis;
     }
 
 }
