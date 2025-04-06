@@ -25,7 +25,7 @@ ARM-Stream: Active Recovery of Miscategorizations in Clustering-Based Data Strea
 To build and install the project, execute the following command from the root directory of the project:
 
 ```
-.\mvnw.cmd clean install -DskipTests
+.\mvnw.cmd clean install
 ```
 
 ### How to run?
@@ -59,6 +59,24 @@ Make sure that you have the [CDSC-AL](https://github.com/douglas444/arm-remote-c
 
 ```
 .\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasTightIntegration" -D"exec.args"="output/minas_tight_integration"
+```
+
+#### _ARM-ECHO Tight Integration_:
+
+```
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.EchoTightIntegration" -D"exec.args"="output/echo_tight_integration"
+```
+
+#### _MINAS without ARM-Stream_:
+
+```
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.MinasWithoutArmStream" -D"exec.args"="output/minas_raw"
+```
+
+#### _ECHO without ARM-Stream_:
+
+```
+.\mvnw.cmd exec:java -pl arm-stream-exp -D"exec.mainClass"="br.ufu.facom.armstream.exp.main.EchoWithoutArmStream" -D"exec.args"="output/echo_raw"
 ```
 
 #### _ARM-MINAS Threshold Factor Analysis_:

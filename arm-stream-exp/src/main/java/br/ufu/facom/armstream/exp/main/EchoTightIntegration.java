@@ -20,8 +20,6 @@ public class EchoTightIntegration {
 
         final ExperimentWorkspace experimentWorkspace = new ExperimentWorkspace();
 
-        //MKCN
-
         IntegrationAnalysis.executeTightIntegration(
                 experimentWorkspace.echoMOA3,
                 experimentWorkspace.metaCategorizers[2],
@@ -53,40 +51,6 @@ public class EchoTightIntegration {
                 outputDestination,
                 "echo_covtype_mkcn_tight_integration_report.json",
                 "echo_covtype_mkcn_tight_integration_logs.json");
-
-        //MKR
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.echoMOA3,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "echo_moa3_mkr_tight_integration_report.json",
-                "echo_moa3_mkr_tight_integration_logs.json");
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.echoSynEDC,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "echo_synedc_mkr_tight_integration_report.json",
-                "echo_synedc_mkr_tight_integration_logs.json");
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.echoKDD99,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "echo_kdd99_mkr_tight_integration_report.json",
-                "echo_kdd99_mkr_tight_integration_logs.json");
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.echoCovtype,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "echo_covtype_mkr_tight_integration_report.json",
-                "echo_covtype_mkr_tight_integration_logs.json");
 
     }
 

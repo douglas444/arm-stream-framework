@@ -72,6 +72,8 @@ public class ArmEcho implements ArmBaseClassifier, Cloneable {
             properties.put("cer", String.valueOf(echo.getConfusionMatrix().combinedError()));
             properties.put("unkR", String.valueOf(echo.getConfusionMatrix().unknownRate()));
             properties.put("noveltyCount", String.valueOf(echo.getNoveltyCount()));
+            properties.put("averageUpdateDuration", String.valueOf(echo.getAverageUpdateDurationInMillis()));
+            properties.put("interceptionAverageTimeOverhead", String.valueOf(echo.getInterceptionAverageTimeOverhead()));
 
             peeker.accept(properties);
         });

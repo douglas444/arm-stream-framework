@@ -20,8 +20,6 @@ public class MinasTightIntegration {
 
         final ExperimentWorkspace experimentWorkspace = new ExperimentWorkspace();
 
-        //MKCN
-
         IntegrationAnalysis.executeTightIntegration(
                 experimentWorkspace.minasMOA3,
                 experimentWorkspace.metaCategorizers[2],
@@ -53,40 +51,6 @@ public class MinasTightIntegration {
                 outputDestination,
                 "minas_covtype_mkcn_tight_integration_report.json",
                 "minas_covtype_mkcn_tight_integration_logs.json");
-
-        //MKR
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.minasMOA3,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "minas_moa3_mkr_tight_integration_report.json",
-                "minas_moa3_mkr_tight_integration_logs.json");
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.minasSynEDC,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "minas_synedc_mkr_tight_integration_report.json",
-                "minas_synedc_mkr_tight_integration_logs.json");
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.minasKDD99,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "minas_kdd99_mkr_tight_integration_report.json",
-                "minas_kdd99_mkr_tight_integration_logs.json");
-
-        IntegrationAnalysis.executeTightIntegration(
-                experimentWorkspace.minasCovtype,
-                experimentWorkspace.metaCategorizers[2],
-                experimentWorkspace.activeCategorizers[2],
-                outputDestination,
-                "minas_covtype_mkr_tight_integration_report.json",
-                "minas_covtype_mkr_tight_integration_logs.json");
 
     }
 

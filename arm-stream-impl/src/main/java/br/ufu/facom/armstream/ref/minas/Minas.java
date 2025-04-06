@@ -21,6 +21,11 @@ public class Minas {
     private boolean warmed;
     private int heaterCapacity;
 
+    private double totalUpdatesDurationInMillis;
+    private double totalInterceptionsDurationInMillis;
+    private int updatesCount;
+    private int interceptionCount;
+
     private final DecisionModel decisionModel;
     private final List<Sample> temporaryMemory;
     private final DecisionModel sleepMemory;
@@ -100,6 +105,8 @@ public class Minas {
 
     private void noveltyDetection() {
 
+        final long updateBegin = System.currentTimeMillis();
+
         final List<Cluster> clusters = KMeansPlusPlus
                 .execute(this.temporaryMemory, this.noveltyDetectionNumberOfClusters, this.random)
                 .stream()
@@ -120,6 +127,10 @@ public class Minas {
 
             categorizeAndUpdateModel(cluster);
         }
+
+        final double updateDuration = System.currentTimeMillis() - updateBegin;
+        this.totalUpdatesDurationInMillis += updateDuration;
+        ++this.updatesCount;
 
     }
 
@@ -161,6 +172,8 @@ public class Minas {
 
         if (this.armInterceptor != null) {
 
+            final long interceptionBegin = System.currentTimeMillis();
+
             final ArmInterceptionContextImpl context = new ArmInterceptionContextImpl(
                     microCluster,
                     cluster.getSamples(),
@@ -169,6 +182,11 @@ public class Minas {
                     predictedCategory);
 
             labeledDataInstances.addAll(this.armInterceptor.intercept(context).getLabeledDataInstances());
+
+            final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
+            this.totalInterceptionsDurationInMillis += interceptionDuration;
+            ++this.interceptionCount;
+
         }
 
 
@@ -306,6 +324,18 @@ public class Minas {
 
     public int getNoveltyCount() {
         return noveltyCount;
+    }
+
+    public double getAverageUpdateDurationInMillis() {
+        return this.totalUpdatesDurationInMillis / this.updatesCount;
+    }
+
+    public double getAverageInterceptionDurationInMillis() {
+        return this.totalInterceptionsDurationInMillis / this.interceptionCount;
+    }
+
+    public double getInterceptionAverageTimeOverhead() {
+        return this.getAverageInterceptionDurationInMillis() / this.getAverageUpdateDurationInMillis();
     }
 
 }

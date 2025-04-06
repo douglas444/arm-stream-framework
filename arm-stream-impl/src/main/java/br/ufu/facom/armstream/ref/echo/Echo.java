@@ -27,6 +27,11 @@ public class Echo {
     private int classificationsCount;
     private int noveltyCount;
 
+    private double totalUpdatesDurationInMillis;
+    private double totalInterceptionsDurationInMillis;
+    private int updatesCount;
+    private int interceptionCount;
+
     private final HashMap<Integer, StatElement> stat;
     private final List<Sample> filteredOutlierBuffer;
     private final List<Model> ensemble;
@@ -95,6 +100,10 @@ public class Echo {
         this.confidenceSum = 0;
         this.noveltyCount = 0;
         this.classificationsCount = 0;
+        this.totalUpdatesDurationInMillis = 0;
+        this.totalInterceptionsDurationInMillis = 0;
+        this.updatesCount = 0;
+        this.interceptionCount = 0;
 
         this.stat = new HashMap<>();
         this.filteredOutlierBuffer = new ArrayList<>();
@@ -144,11 +153,19 @@ public class Echo {
             this.filteredOutlierBuffer.add(sample);
             this.confusionMatrix.addUnknown(sample.getY());
             if (this.filteredOutlierBuffer.size() >= this.filteredOutlierBufferMaxSize) {
+
+                final long updateBegin = System.currentTimeMillis();
+
                 if (this.multiClassNoveltyDetection) {
                     this.novelClassDetectionMultiClass();
                 } else {
                     this.novelClassDetectionSingleClass();
                 }
+
+                final double updateDuration = System.currentTimeMillis() - updateBegin;
+                this.totalUpdatesDurationInMillis += updateDuration;
+                ++this.updatesCount;
+
             }
         }
 
@@ -391,8 +408,14 @@ public class Echo {
 
                 if (this.interceptor != null) {
 
-                    ArmInterceptionResult result = this.interceptor
+                    final long interceptionBegin = System.currentTimeMillis();
+
+                    final ArmInterceptionResult result = this.interceptor
                             .intercept(new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
+
+                    final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
+                    this.totalInterceptionsDurationInMillis += interceptionDuration;
+                    ++this.interceptionCount;
 
                     if (result.getPrediction() == NOVELTY) {
                         this.addNovelty(cluster);
@@ -439,8 +462,15 @@ public class Echo {
 
             this.filteredOutlierBuffer.removeAll(cluster.getSamples());
             if (this.interceptor != null) {
-                ArmInterceptionResult result = this.interceptor.intercept(
+
+                final long interceptionBegin = System.currentTimeMillis();
+
+                final ArmInterceptionResult result = this.interceptor.intercept(
                         new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
+
+                final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
+                this.totalInterceptionsDurationInMillis += interceptionDuration;
+                ++this.interceptionCount;
 
                 if (result.getPrediction() == NOVELTY) {
                     this.addNovelty(cluster);
@@ -456,11 +486,11 @@ public class Echo {
         }
     }
 
-    private void recategorizeAsKnown(Cluster cluster, ArmInterceptionResult result) {
+    private void recategorizeAsKnown(final Cluster cluster, final ArmInterceptionResult result) {
 
-        ImpurityBasedCluster impurityBasedCluster = new ImpurityBasedCluster(null, cluster.calculateCentroid());
+        final ImpurityBasedCluster impurityBasedCluster = new ImpurityBasedCluster(null, cluster.calculateCentroid());
 
-        Integer mostFrequentLabel = getMostRepeatedElement(result.getLabeledDataInstances()
+        final Integer mostFrequentLabel = getMostRepeatedElement(result.getLabeledDataInstances()
                 .stream()
                 .map(ArmDataInstance::getTrueLabel)
                 .collect(Collectors.toList()));
@@ -544,6 +574,8 @@ public class Echo {
 
     private void updateClassifier(final int changePoint) {
 
+        final long updateBegin = System.currentTimeMillis();
+
         final List<Sample> samples = new ArrayList<>();
 
         this.window.stream()
@@ -571,26 +603,34 @@ public class Echo {
                 .filter(cluster -> cluster.size() > 1)
                 .collect(Collectors.toList());
 
-        List<PseudoPoint> pseudoPoints = new ArrayList<>();
+        final List<PseudoPoint> pseudoPoints = new ArrayList<>();
 
         for (final ImpurityBasedCluster cluster : clusters) {
 
             if (this.interceptor != null) {
 
-                ArmInterceptionContextImpl context = new ArmInterceptionContextImpl(cluster, labeledSamples, this.ensemble);
-                ArmInterceptionResult result = this.interceptor.intercept(context);
+                final long interceptionBegin = System.currentTimeMillis();
+
+                final ArmInterceptionContextImpl context = new ArmInterceptionContextImpl(
+                        cluster, labeledSamples, this.ensemble);
+
+                final ArmInterceptionResult result = this.interceptor.intercept(context);
+
+                final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
+                this.totalInterceptionsDurationInMillis += interceptionDuration;
+                ++this.interceptionCount;
 
                 if (result.getPrediction() == context.getPredictedCategory()) {
                     pseudoPoints.add(new PseudoPoint(cluster));
                 } else {
 
-                    Integer label = getMostRepeatedElement(
+                    final Integer label = getMostRepeatedElement(
                             result.getLabeledDataInstances()
                                     .stream()
                                     .map(ArmDataInstance::getTrueLabel)
                                     .collect(Collectors.toList()));
 
-                    ImpurityBasedCluster fixedCluster = new ImpurityBasedCluster(null, cluster.getCentroid());
+                    final ImpurityBasedCluster fixedCluster = new ImpurityBasedCluster(null, cluster.getCentroid());
                     cluster.getSamples().forEach(sample -> fixedCluster.addLabeledSample(new Sample(sample.getX(), label)));
                     pseudoPoints.add(new PseudoPoint(fixedCluster));
 
@@ -604,9 +644,13 @@ public class Echo {
         this.addModel(samples, pseudoPoints);
         this.window.removeAll(this.window.subList(0, changePoint));
 
+        final double updateDuration = System.currentTimeMillis() - updateBegin;
+        this.totalUpdatesDurationInMillis += updateDuration;
+        ++this.updatesCount;
+
     }
 
-    private static Integer getMostRepeatedElement(List<Integer> list) {
+    private static Integer getMostRepeatedElement(final List<Integer> list) {
         return list.stream()
                 .collect(Collectors.groupingBy(n -> n, Collectors.counting()))
                 .entrySet().stream()
@@ -630,7 +674,7 @@ public class Echo {
 
     }
 
-    public void insertClusterRecategorizedAsKnownToTheNewerModel(ImpurityBasedCluster impurityBasedCluster) {
+    public void insertClusterRecategorizedAsKnownToTheNewerModel(final ImpurityBasedCluster impurityBasedCluster) {
 
         this.ensemble.get(this.ensemble.size() - 1).getPseudoPoints().add(new PseudoPoint(impurityBasedCluster));
 
@@ -695,6 +739,18 @@ public class Echo {
 
     public int getNoveltyCount() {
         return noveltyCount;
+    }
+
+    public double getAverageUpdateDurationInMillis() {
+        return this.totalUpdatesDurationInMillis / this.updatesCount;
+    }
+
+    public double getAverageInterceptionDurationInMillis() {
+        return this.totalInterceptionsDurationInMillis / this.interceptionCount;
+    }
+
+    public double getInterceptionAverageTimeOverhead() {
+        return this.getAverageInterceptionDurationInMillis() / this.getAverageUpdateDurationInMillis();
     }
 
 }

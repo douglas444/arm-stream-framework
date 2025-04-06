@@ -96,6 +96,16 @@ public class IntegrationAnalysis {
                 baseClassifierPeekedData);
     }
 
+    public static void executeWithNoIntegration(final ArmBaseClassifier baseClassifier,
+                                                final String outputDestination,
+                                                final String baseClassifierOutputFileName) throws Exception {
+        final List<HashMap<String, String>> baseClassifierPeekedData = new ArrayList<>();
+        baseClassifier.run(null, Util.configurePeeker(baseClassifierPeekedData));
+        saveBaseClassifierPeekedDataToFile(
+                outputDestination,
+                baseClassifierOutputFileName,
+                baseClassifierPeekedData);
+    }
 
     private static void saveBaseClassifierPeekedDataToFile(final String destination,
                                                            final String fileName,
