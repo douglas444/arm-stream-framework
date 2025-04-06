@@ -1,5 +1,7 @@
 package br.ufu.facom.armstream.ref.echo;
 
+import br.ufu.facom.armstream.api.datastructure.ArmDataInstance;
+import br.ufu.facom.armstream.api.interceptor.ArmInterceptionResult;
 import br.ufu.facom.armstream.api.interceptor.ArmInterceptor;
 import br.ufu.facom.armstream.ref.echo.armstream.ArmInterceptionContextImpl;
 import br.ufu.facom.armstream.ref.util.algorithms.KMeansPlusPlus;
@@ -388,13 +390,24 @@ public class Echo {
             for (final Cluster cluster : clusters) {
 
                 if (this.interceptor != null) {
-                    this.interceptor.intercept(new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
+
+                    ArmInterceptionResult result = this.interceptor
+                            .intercept(new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
+
+                    if (result.getPrediction() == NOVELTY) {
+                        this.addNovelty(cluster);
+                        this.incrementNoveltyCount();
+                    } else {
+                        recategorizeAsKnown(cluster, result);
+                    }
+
+                } else {
+                    this.addNovelty(cluster);
+                    this.incrementNoveltyCount();
                 }
 
-                this.addNovelty(cluster);
-            }
 
-            this.incrementNoveltyCount();
+            }
 
         }
 
@@ -426,12 +439,38 @@ public class Echo {
 
             this.filteredOutlierBuffer.removeAll(cluster.getSamples());
             if (this.interceptor != null) {
-                this.interceptor.intercept(new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
-            }
+                ArmInterceptionResult result = this.interceptor.intercept(
+                        new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
 
-            this.addNovelty(cluster);
-            this.incrementNoveltyCount();
+                if (result.getPrediction() == NOVELTY) {
+                    this.addNovelty(cluster);
+                    this.incrementNoveltyCount();
+                } else {
+                    recategorizeAsKnown(cluster, result);
+                }
+
+            } else {
+                this.addNovelty(cluster);
+                this.incrementNoveltyCount();
+            }
         }
+    }
+
+    private void recategorizeAsKnown(Cluster cluster, ArmInterceptionResult result) {
+
+        ImpurityBasedCluster impurityBasedCluster = new ImpurityBasedCluster(null, cluster.calculateCentroid());
+
+        Integer mostFrequentLabel = getMostRepeatedElement(result.getLabeledDataInstances()
+                .stream()
+                .map(ArmDataInstance::getTrueLabel)
+                .collect(Collectors.toList()));
+
+        cluster.getSamples()
+                .stream()
+                .map(s -> new Sample(s.getX(), mostFrequentLabel))
+                .forEach(impurityBasedCluster::addLabeledSample);
+
+        insertClusterRecategorizedAsKnownToTheNewerModel(impurityBasedCluster);
     }
 
     public void incrementNoveltyCount() {
@@ -532,21 +571,48 @@ public class Echo {
                 .filter(cluster -> cluster.size() > 1)
                 .collect(Collectors.toList());
 
-        if (this.interceptor != null) {
-            for (final ImpurityBasedCluster cluster : clusters) {
-                this.interceptor.intercept(new ArmInterceptionContextImpl(cluster, labeledSamples, this.ensemble));
+        List<PseudoPoint> pseudoPoints = new ArrayList<>();
+
+        for (final ImpurityBasedCluster cluster : clusters) {
+
+            if (this.interceptor != null) {
+
+                ArmInterceptionContextImpl context = new ArmInterceptionContextImpl(cluster, labeledSamples, this.ensemble);
+                ArmInterceptionResult result = this.interceptor.intercept(context);
+
+                if (result.getPrediction() == context.getPredictedCategory()) {
+                    pseudoPoints.add(new PseudoPoint(cluster));
+                } else {
+
+                    Integer label = getMostRepeatedElement(
+                            result.getLabeledDataInstances()
+                                    .stream()
+                                    .map(ArmDataInstance::getTrueLabel)
+                                    .collect(Collectors.toList()));
+
+                    ImpurityBasedCluster fixedCluster = new ImpurityBasedCluster(null, cluster.getCentroid());
+                    cluster.getSamples().forEach(sample -> fixedCluster.addLabeledSample(new Sample(sample.getX(), label)));
+                    pseudoPoints.add(new PseudoPoint(fixedCluster));
+
+                }
+
+            } else {
+                pseudoPoints.add(new PseudoPoint(cluster));
             }
         }
 
-        final List<PseudoPoint> pseudoPoints = clusters
-                .stream()
-                .map(PseudoPoint::new)
-                .collect(Collectors.toList());
-
         this.addModel(samples, pseudoPoints);
-
         this.window.removeAll(this.window.subList(0, changePoint));
 
+    }
+
+    private static Integer getMostRepeatedElement(List<Integer> list) {
+        return list.stream()
+                .collect(Collectors.groupingBy(n -> n, Collectors.counting()))
+                .entrySet().stream()
+                .max(Map.Entry.comparingByValue())
+                .orElseThrow()
+                .getKey();
     }
 
     public void addModel(final List<Sample> labeledSamples, final List<PseudoPoint> pseudoPoints) {
@@ -561,6 +627,22 @@ public class Echo {
         this.ensemble.remove(0);
         this.ensemble.add(model);
         this.stat.clear();
+
+    }
+
+    public void insertClusterRecategorizedAsKnownToTheNewerModel(ImpurityBasedCluster impurityBasedCluster) {
+
+        this.ensemble.get(this.ensemble.size() - 1).getPseudoPoints().add(new PseudoPoint(impurityBasedCluster));
+
+        impurityBasedCluster.getSamplesByLabel().keySet().forEach((label) -> {
+            if (this.confusionMatrix.isLabelUnknown(label)) {
+                this.confusionMatrix.addKnownLabel(label);
+            }
+        });
+
+        impurityBasedCluster.getSamplesByLabel().forEach((label, samples) -> {
+            samples.forEach(sample -> this.confusionMatrix.updatedDelayed(label, label, false));
+        });
 
     }
 
