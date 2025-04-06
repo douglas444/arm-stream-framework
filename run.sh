@@ -1,2 +1,5 @@
-docker build -t arm-stream-runner .
-docker run --rm -v "$(pwd)"/results:/app/output arm-stream-runner
+chmod +x ./mvnw && ./mvnw clean install
+./mvnw exec:java -pl arm-stream-exp -Dexec.mainClass="br.ufu.facom.armstream.exp.main.MinasTightIntegration" -Dexec.args="output/minas_tight_integration"
+./mvnw exec:java -pl arm-stream-exp -Dexec.mainClass="br.ufu.facom.armstream.exp.main.EchoTightIntegration" -Dexec.args="output/echo_tight_integration"
+./mvnw exec:java -pl arm-stream-exp -Dexec.mainClass="br.ufu.facom.armstream.exp.main.MinasWithoutArmStream" -Dexec.args="output/minas_raw"
+./mvnw exec:java -pl arm-stream-exp -Dexec.mainClass="br.ufu.facom.armstream.exp.main.EchoWithoutArmStream" -Dexec.args="output/echo_raw"
