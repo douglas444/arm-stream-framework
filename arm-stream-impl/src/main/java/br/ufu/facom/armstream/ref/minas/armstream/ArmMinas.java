@@ -61,6 +61,11 @@ public class ArmMinas implements ArmBaseClassifier, Cloneable {
             properties.put("noveltyCount", String.valueOf(minas.getNoveltyCount()));
             properties.put("averageUpdateDuration", String.valueOf(minas.getAverageUpdateDurationInMillis()));
             properties.put("interceptionAverageTimeOverhead", String.valueOf(minas.getInterceptionAverageTimeOverhead()));
+            properties.put("avgUpdateDuration", String.valueOf(minas.getAverageUpdateDurationInMillis()));
+            properties.put("avgArmTimePerUpdateInMillis", String.valueOf(minas.getAverageArmStreamExecutionTimePerUpdateInMillis()));
+            properties.put("avgArmTimePerUpdateOverhead", String.valueOf(minas.getAverageArmStreamExecutionTimePerUpdateOverhead()));
+            properties.put("avgClassSummarySizePerInterception", String.valueOf(minas.getAverageDataClassSummarySizePerInterception()));
+            properties.put("avgClusterSizePerInterception", String.valueOf(minas.getAverageClusterSizePerInterception()));
 
             peeker.accept(properties);
         });

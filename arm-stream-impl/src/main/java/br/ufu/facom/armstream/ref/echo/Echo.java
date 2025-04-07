@@ -31,6 +31,10 @@ public class Echo {
     private double totalInterceptionsDurationInMillis;
     private int updatesCount;
 
+    private double interceptedClustersSizeSum;
+    private double dataClassSummarySizeSum;
+    private int interceptionsCount;
+
     private final HashMap<Integer, StatElement> stat;
     private final List<Sample> filteredOutlierBuffer;
     private final List<Model> ensemble;
@@ -408,11 +412,14 @@ public class Echo {
 
                     final long interceptionBegin = System.currentTimeMillis();
 
-                    final ArmInterceptionResult result = this.interceptor
-                            .intercept(new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
+                    final ArmInterceptionContextImpl context = new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble);
+                    final ArmInterceptionResult result = this.interceptor.intercept(context);
 
                     final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                     this.totalInterceptionsDurationInMillis += interceptionDuration;
+                    this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
+                    this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+                    ++this.interceptionsCount;
 
                     if (result.getPrediction() == NOVELTY) {
                         this.addNovelty(cluster);
@@ -462,11 +469,14 @@ public class Echo {
 
                 final long interceptionBegin = System.currentTimeMillis();
 
-                final ArmInterceptionResult result = this.interceptor.intercept(
-                        new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble));
+                final ArmInterceptionContextImpl context = new ArmInterceptionContextImpl(cluster, NOVELTY, this.ensemble);
+                final ArmInterceptionResult result = this.interceptor.intercept(context);
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                 this.totalInterceptionsDurationInMillis += interceptionDuration;
+                this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
+                this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+                ++this.interceptionsCount;
 
                 if (result.getPrediction() == NOVELTY) {
                     this.addNovelty(cluster);
@@ -614,6 +624,9 @@ public class Echo {
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                 this.totalInterceptionsDurationInMillis += interceptionDuration;
+                this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
+                this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+                ++this.interceptionsCount;
 
                 if (result.getPrediction() == context.getPredictedCategory()) {
                     pseudoPoints.add(new PseudoPoint(cluster));
@@ -740,8 +753,20 @@ public class Echo {
         return this.totalUpdatesDurationInMillis / this.updatesCount;
     }
 
-    public double getInterceptionAverageTimeOverhead() {
+    public double getAverageArmStreamExecutionTimePerUpdateInMillis() {
+        return this.totalInterceptionsDurationInMillis / this.updatesCount;
+    }
+
+    public double getAverageArmStreamExecutionTimePerUpdateOverhead() {
         return this.totalInterceptionsDurationInMillis / this.totalUpdatesDurationInMillis;
+    }
+
+    public double getAverageDataClassSummarySizePerInterception() {
+        return this.dataClassSummarySizeSum / this.interceptionsCount;
+    }
+
+    public double getAverageClusterSizePerInterception() {
+        return this.interceptedClustersSizeSum / this.interceptionsCount;
     }
 
 }
