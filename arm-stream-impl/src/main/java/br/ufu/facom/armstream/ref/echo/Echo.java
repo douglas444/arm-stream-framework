@@ -769,4 +769,8 @@ public class Echo {
         return this.interceptedClustersSizeSum / this.interceptionsCount;
     }
 
+    public double getAverageInterceptionTime() {
+        return this.totalInterceptionsDurationInMillis / this.interceptionsCount;
+    }
+
 }

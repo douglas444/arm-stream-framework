@@ -72,11 +72,12 @@ public class ArmEcho implements ArmBaseClassifier, Cloneable {
             properties.put("cer", String.valueOf(echo.getConfusionMatrix().combinedError()));
             properties.put("unkR", String.valueOf(echo.getConfusionMatrix().unknownRate()));
             properties.put("noveltyCount", String.valueOf(echo.getNoveltyCount()));
-            properties.put("avgUpdateDuration", String.valueOf(echo.getAverageUpdateDurationInMillis()));
-            properties.put("avgArmTimePerUpdateInMillis", String.valueOf(echo.getAverageArmStreamExecutionTimePerUpdateInMillis()));
-            properties.put("avgArmTimePerUpdateOverhead", String.valueOf(echo.getAverageArmStreamExecutionTimePerUpdateOverhead()));
-            properties.put("avgClassSummarySizePerInterception", String.valueOf(echo.getAverageDataClassSummarySizePerInterception()));
-            properties.put("avgClusterSizePerInterception", String.valueOf(echo.getAverageClusterSizePerInterception()));
+
+            properties.put("avgUpdateTime", String.valueOf(echo.getAverageUpdateDurationInMillis()));
+            properties.put("avgUpdateOverhead", String.valueOf(echo.getAverageArmStreamExecutionTimePerUpdateOverhead()));
+            properties.put("avgClassSummarySize", String.valueOf(echo.getAverageDataClassSummarySizePerInterception()));
+            properties.put("avgClusterSize", String.valueOf(echo.getAverageClusterSizePerInterception()));
+            properties.put("avgInterceptionTime", String.valueOf(echo.getAverageInterceptionTime()));
 
             peeker.accept(properties);
         });
