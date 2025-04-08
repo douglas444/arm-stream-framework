@@ -33,7 +33,9 @@ To build and install the project, execute the following command from the root di
 To run one of the reference experiments, choose the respective command line and execute it from the root of
 the project. The output files will be created in the `output` directory in the root of the project. If the
 directory does not exist yet, it will be created. You can specify a different destination for the output files by
-editing the `-Dexec.args` argument in the command line.
+editing the `-Dexec.args` argument in the command line. If you get the java.lang.OutOfMemoryError error when 
+executing one of the commands, you may need to add `MAVEN_OPTS="-Xms2G -Xmx8G"` at the beginning of the command line,
+to set up the minimum and maximum memory size of the Java Heap.
 
 #### _ARM-MINAS Loose Integration_
 
