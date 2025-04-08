@@ -761,7 +761,7 @@ public class Echo {
         return this.dataClassSummarySizeSum / this.interceptionsCount;
     }
 
-    public double getAverageClusterSizePerInterception() {
+    public double getAverageInterceptedClusterSize() {
         return this.interceptedClusterSizeSum / this.interceptionsCount;
     }
 
