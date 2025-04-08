@@ -21,11 +21,11 @@ public class Minas {
     private boolean warmed;
     private int heaterCapacity;
 
-    private double totalUpdatesDurationInMillis;
-    private double totalInterceptionsDurationInMillis;
+    private double totalUpdateTimeInMillis;
+    private double totalInterceptionTimeInMillis;
     private int updatesCount;
 
-    private double interceptedClustersSizeSum;
+    private double interceptedClusterSizeSum;
     private double dataClassSummarySizeSum;
     private int interceptionsCount;
 
@@ -132,7 +132,7 @@ public class Minas {
         }
 
         final double updateDuration = System.currentTimeMillis() - updateBegin;
-        this.totalUpdatesDurationInMillis += updateDuration;
+        this.totalUpdateTimeInMillis += updateDuration;
         ++this.updatesCount;
 
     }
@@ -187,9 +187,9 @@ public class Minas {
             labeledDataInstances.addAll(this.armInterceptor.intercept(context).getLabeledDataInstances());
 
             final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
-            this.totalInterceptionsDurationInMillis += interceptionDuration;
+            this.totalInterceptionTimeInMillis += interceptionDuration;
             this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-            this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+            this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
             ++this.interceptionsCount;
 
         }
@@ -331,32 +331,24 @@ public class Minas {
         return noveltyCount;
     }
 
-    public double getAverageUpdateDurationInMillis() {
-        return this.totalUpdatesDurationInMillis / this.updatesCount;
+    public double getAverageUpdateTimeInMillis() {
+        return this.totalUpdateTimeInMillis / this.updatesCount;
     }
 
     public double getInterceptionAverageTimeOverhead() {
-        return this.totalInterceptionsDurationInMillis / this.totalUpdatesDurationInMillis;
+        return this.totalInterceptionTimeInMillis / this.totalUpdateTimeInMillis;
     }
 
-    public double getAverageArmStreamExecutionTimePerUpdateInMillis() {
-        return this.totalInterceptionsDurationInMillis / this.updatesCount;
-    }
-
-    public double getAverageArmStreamExecutionTimePerUpdateOverhead() {
-        return this.totalInterceptionsDurationInMillis / this.totalUpdatesDurationInMillis;
-    }
-
-    public double getAverageDataClassSummarySizePerInterception() {
+    public double getAverageDataClassSummarySize() {
         return this.dataClassSummarySizeSum / this.interceptionsCount;
     }
 
     public double getAverageClusterSizePerInterception() {
-        return this.interceptedClustersSizeSum / this.interceptionsCount;
+        return this.interceptedClusterSizeSum / this.interceptionsCount;
     }
 
     public double getAverageInterceptionTime() {
-        return this.totalInterceptionsDurationInMillis / this.interceptionsCount;
+        return this.totalInterceptionTimeInMillis / this.interceptionsCount;
     }
 
 }

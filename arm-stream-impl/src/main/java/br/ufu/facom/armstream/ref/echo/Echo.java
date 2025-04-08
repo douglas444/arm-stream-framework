@@ -27,11 +27,11 @@ public class Echo {
     private int classificationsCount;
     private int noveltyCount;
 
-    private double totalUpdatesDurationInMillis;
-    private double totalInterceptionsDurationInMillis;
+    private double totalUpdateTimeInMillis;
+    private double totalInterceptionTimeInMillis;
     private int updatesCount;
 
-    private double interceptedClustersSizeSum;
+    private double interceptedClusterSizeSum;
     private double dataClassSummarySizeSum;
     private int interceptionsCount;
 
@@ -103,8 +103,8 @@ public class Echo {
         this.confidenceSum = 0;
         this.noveltyCount = 0;
         this.classificationsCount = 0;
-        this.totalUpdatesDurationInMillis = 0;
-        this.totalInterceptionsDurationInMillis = 0;
+        this.totalUpdateTimeInMillis = 0;
+        this.totalInterceptionTimeInMillis = 0;
         this.updatesCount = 0;
 
         this.stat = new HashMap<>();
@@ -165,7 +165,7 @@ public class Echo {
                 }
 
                 final double updateDuration = System.currentTimeMillis() - updateBegin;
-                this.totalUpdatesDurationInMillis += updateDuration;
+                this.totalUpdateTimeInMillis += updateDuration;
                 ++this.updatesCount;
 
             }
@@ -416,9 +416,9 @@ public class Echo {
                     final ArmInterceptionResult result = this.interceptor.intercept(context);
 
                     final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
-                    this.totalInterceptionsDurationInMillis += interceptionDuration;
+                    this.totalInterceptionTimeInMillis += interceptionDuration;
                     this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-                    this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+                    this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
                     ++this.interceptionsCount;
 
                     if (result.getPrediction() == NOVELTY) {
@@ -473,9 +473,9 @@ public class Echo {
                 final ArmInterceptionResult result = this.interceptor.intercept(context);
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
-                this.totalInterceptionsDurationInMillis += interceptionDuration;
+                this.totalInterceptionTimeInMillis += interceptionDuration;
                 this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-                this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+                this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
                 ++this.interceptionsCount;
 
                 if (result.getPrediction() == NOVELTY) {
@@ -623,9 +623,9 @@ public class Echo {
                 final ArmInterceptionResult result = this.interceptor.intercept(context);
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
-                this.totalInterceptionsDurationInMillis += interceptionDuration;
+                this.totalInterceptionTimeInMillis += interceptionDuration;
                 this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-                this.interceptedClustersSizeSum += context.getClusterDataInstances().size();
+                this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
                 ++this.interceptionsCount;
 
                 if (result.getPrediction() == context.getPredictedCategory()) {
@@ -653,7 +653,7 @@ public class Echo {
         this.window.removeAll(this.window.subList(0, changePoint));
 
         final double updateDuration = System.currentTimeMillis() - updateBegin;
-        this.totalUpdatesDurationInMillis += updateDuration;
+        this.totalUpdateTimeInMillis += updateDuration;
         ++this.updatesCount;
 
     }
@@ -749,28 +749,24 @@ public class Echo {
         return noveltyCount;
     }
 
-    public double getAverageUpdateDurationInMillis() {
-        return this.totalUpdatesDurationInMillis / this.updatesCount;
+    public double getAverageUpdateTimeInMillis() {
+        return this.totalUpdateTimeInMillis / this.updatesCount;
     }
 
-    public double getAverageArmStreamExecutionTimePerUpdateInMillis() {
-        return this.totalInterceptionsDurationInMillis / this.updatesCount;
+    public double getInterceptionAverageTimeOverhead() {
+        return this.totalInterceptionTimeInMillis / this.totalUpdateTimeInMillis;
     }
 
-    public double getAverageArmStreamExecutionTimePerUpdateOverhead() {
-        return this.totalInterceptionsDurationInMillis / this.totalUpdatesDurationInMillis;
-    }
-
-    public double getAverageDataClassSummarySizePerInterception() {
+    public double getAverageDataClassSummarySize() {
         return this.dataClassSummarySizeSum / this.interceptionsCount;
     }
 
     public double getAverageClusterSizePerInterception() {
-        return this.interceptedClustersSizeSum / this.interceptionsCount;
+        return this.interceptedClusterSizeSum / this.interceptionsCount;
     }
 
     public double getAverageInterceptionTime() {
-        return this.totalInterceptionsDurationInMillis / this.interceptionsCount;
+        return this.totalInterceptionTimeInMillis / this.interceptionsCount;
     }
 
 }
