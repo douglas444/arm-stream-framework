@@ -19,6 +19,7 @@ import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class IntegrationAnalysis {
 
@@ -141,6 +142,7 @@ public class IntegrationAnalysis {
         baseCategorizerLevel.put("baseCategorizerSensitivity", baseCM.sensitivity());
         baseCategorizerLevel.put("baseCategorizerSpecificity", baseCM.specificity());
         baseCategorizerLevel.putPOJO("baseClassifierCategorizationConfusionMatrix", baseCM);
+        baseCategorizerLevel.set("summaryBuffer", mapper.valueToTree(summary.getBuffer()));
 
         fillMetaCategorizerLevel(
                 summary,
