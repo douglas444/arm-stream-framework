@@ -59,7 +59,7 @@ public class EchoTest {
             throw new MissingResourceException("File not found", EchoTest.class.getName(), DATASET_RESOURCE_FILEPATH);
         }
 
-        URI uri = new URI(url.toString());//Required to prevent the encoding of special characters
+        final URI uri = new URI(url.toString());//Required to prevent the encoding of special characters
         assertDoesNotThrow(() -> DataStream.from(uri.getPath()).forEach(echo::process));
 
     }

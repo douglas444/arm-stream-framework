@@ -15,7 +15,7 @@ public class ArmDataInstanceDTO implements ArmDataInstance {
     public ArmDataInstanceDTO() {
     }
 
-    public ArmDataInstanceDTO(double[] attributes, int trueLabel, boolean trueLabelAvailable) {
+    public ArmDataInstanceDTO(final double[] attributes, final int trueLabel, final boolean trueLabelAvailable) {
         this.attributes = attributes;
         this.trueLabel = trueLabel;
         this.trueLabelAvailable = trueLabelAvailable;
@@ -26,7 +26,7 @@ public class ArmDataInstanceDTO implements ArmDataInstance {
         return attributes;
     }
 
-    public void setAttributes(double[] attributes) {
+    public void setAttributes(final double[] attributes) {
         this.attributes = attributes;
     }
 
@@ -35,7 +35,7 @@ public class ArmDataInstanceDTO implements ArmDataInstance {
         return trueLabel;
     }
 
-    public void setTrueLabel(int trueLabel) {
+    public void setTrueLabel(final int trueLabel) {
         this.trueLabel = trueLabel;
     }
 
@@ -44,7 +44,7 @@ public class ArmDataInstanceDTO implements ArmDataInstance {
         return trueLabelAvailable;
     }
 
-    public void setTrueLabelAvailable(boolean trueLabelAvailable) {
+    public void setTrueLabelAvailable(final boolean trueLabelAvailable) {
         this.trueLabelAvailable = trueLabelAvailable;
     }
 }

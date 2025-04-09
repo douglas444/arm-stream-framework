@@ -15,28 +15,28 @@ public class RemoteBaseClassifier {
 
     private final String remoteBaseClassifierUrl;
 
-    public RemoteBaseClassifier(String remoteBaseClassifierUrl) {
+    public RemoteBaseClassifier(final String remoteBaseClassifierUrl) {
         this.remoteBaseClassifierUrl = remoteBaseClassifierUrl;
     }
 
-    public void run(HashMap<String, String> parameters,
-                    ArmInterceptor interceptor,
-                    Consumer<HashMap<String, String>> peeker,
-                    int interceptorServerPort) {
+    public void run(final HashMap<String, String> parameters,
+                    final ArmInterceptor interceptor,
+                    final Consumer<HashMap<String, String>> peeker,
+                    final int interceptorServerPort) {
 
 
-        InterceptorService interceptorService = InterceptorService.getInstance();
+        final InterceptorService interceptorService = InterceptorService.getInstance();
         interceptorService.setInterceptor(interceptor);
         interceptorService.setPeeker(peeker);
 
-        String interceptorServerUrl = InterceptorServer.start(interceptorServerPort);
+        final String interceptorServerUrl = InterceptorServer.start(interceptorServerPort);
 
         if (this.remoteBaseClassifierUrl == null) {
             throw new IllegalStateException("remoteBaseClassifierUrl is null");
         }
 
-        Client client = ClientBuilder.newClient();
-        WebTarget target = client.target(this.remoteBaseClassifierUrl)
+        final Client client = ClientBuilder.newClient();
+        final WebTarget target = client.target(this.remoteBaseClassifierUrl)
                 .queryParam("interceptor_base_url", interceptorServerUrl);
 
         System.out.println("Requesting start of remote base classifier with parameters: " +
@@ -45,7 +45,7 @@ public class RemoteBaseClassifier {
                         .map(key -> key + "=" + parameters.get(key))
                         .collect(Collectors.joining(", ", "{", "}")));
 
-        Response response = target.request().post(Entity.json(parameters));
+        final Response response = target.request().post(Entity.json(parameters));
 
         if (!response.getStatusInfo().getFamily().equals(Response.Status.Family.SUCCESSFUL)) {
             throw new RuntimeException("Request to remote classifier failed\n" + response);
@@ -57,7 +57,7 @@ public class RemoteBaseClassifier {
 
         try {
             interceptorService.getLatch().await();
-        } catch (InterruptedException e) {
+        } catch (final InterruptedException e) {
             throw new RuntimeException(e);
         }
 

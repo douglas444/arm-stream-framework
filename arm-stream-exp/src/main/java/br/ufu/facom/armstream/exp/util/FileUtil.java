@@ -29,10 +29,10 @@ public class FileUtil {
             throw new FileNotFoundException("File not found" + name);
         }
 
-        URI uri;//Required to prevent the encoding of special characters
+        final URI uri;//Required to prevent the encoding of special characters
         try {
             uri = new URI(url.toString());
-        } catch (URISyntaxException e) {
+        } catch (final URISyntaxException e) {
             throw new RuntimeException(e);
         }
 

@@ -27,14 +27,14 @@ public class InterceptorService {
         return instance;
     }
 
-    public ArmInterceptionResult intercept(ArmInterceptionContext context) {
+    public ArmInterceptionResult intercept(final ArmInterceptionContext context) {
         if (this.interceptor == null) {
             throw new IllegalStateException("Interceptor is null");
         }
         return this.interceptor.intercept(context);
     }
 
-    public void peek(LinkedHashMap<String, String> properties) {
+    public void peek(final LinkedHashMap<String, String> properties) {
         this.peeker.accept(properties);
     }
 
@@ -47,11 +47,11 @@ public class InterceptorService {
         return latch;
     }
 
-    public void setInterceptor(ArmInterceptor interceptor) {
+    public void setInterceptor(final ArmInterceptor interceptor) {
         this.interceptor = interceptor;
     }
 
-    public void setPeeker(Consumer<HashMap<String, String>> peeker) {
+    public void setPeeker(final Consumer<HashMap<String, String>> peeker) {
         this.peeker = peeker;
     }
 

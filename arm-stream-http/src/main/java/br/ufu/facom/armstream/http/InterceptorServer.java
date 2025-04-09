@@ -10,19 +10,19 @@ public class InterceptorServer {
 
     private static Server server;
 
-    public static String start(int port) {
+    public static String start(final int port) {
 
         server = new Server(port);
-        ServletContextHandler handler = buildUsingResourceConfig();
+        final ServletContextHandler handler = buildUsingResourceConfig();
         server.setHandler(handler);
 
         try {
             server.start();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
 
-        String url = server.getURI().getScheme() + "://"
+        final String url = server.getURI().getScheme() + "://"
                 + server.getURI().getHost() + ":"
                 + port + "/";
 
@@ -35,16 +35,16 @@ public class InterceptorServer {
             server.stop();
             server.destroy();
             server = null;
-        } catch (Exception e) {
+        } catch (final Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     private static ServletContextHandler buildUsingResourceConfig() {
-        ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        final ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         handler.setContextPath("/");
 
-        ResourceConfig resourceConfig = new ResourceConfig();
+        final ResourceConfig resourceConfig = new ResourceConfig();
         resourceConfig.register(InterceptorResource.class);
         handler.addServlet(new ServletHolder(new ServletContainer(resourceConfig)), "/*");
         return handler;

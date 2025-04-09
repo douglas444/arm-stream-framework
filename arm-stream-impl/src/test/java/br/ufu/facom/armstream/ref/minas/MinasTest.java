@@ -49,7 +49,7 @@ public class MinasTest {
             throw new MissingResourceException("File not found", MinasTest.class.getName(), DATASET_FILEPATH);
         }
 
-        URI uri = new URI(url.toString());//Required to prevent the encoding of special characters
+        final URI uri = new URI(url.toString());//Required to prevent the encoding of special characters
         assertDoesNotThrow(() -> DataStream.from(uri.getPath()).forEach(minas::process));
 
     }

@@ -16,13 +16,13 @@ public class InterceptorResource {
     @POST
     @Path("/intercept")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response intercept(ArmInterceptionContextDTO context) {
+    public Response intercept(final ArmInterceptionContextDTO context) {
         return Response.ok(this.interceptorService.intercept(context)).build();
     }
 
     @POST
     @Path("/peek")
-    public Response peek(LinkedHashMap<String, String> properties) {
+    public Response peek(final LinkedHashMap<String, String> properties) {
         this.interceptorService.peek(properties);
         return Response.ok().build();
     }

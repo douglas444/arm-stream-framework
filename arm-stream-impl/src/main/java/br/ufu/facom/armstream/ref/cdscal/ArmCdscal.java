@@ -16,9 +16,9 @@ public class ArmCdscal implements ArmBaseClassifier, Cloneable {
     private int bufferSize;
 
     @Override
-    public void run(ArmInterceptor interceptor, Consumer<HashMap<String, String>> peeker) {
-        RemoteBaseClassifier remoteBaseClassifier = new RemoteBaseClassifier(this.remoteBaseClassifierUrl);
-        HashMap<String, String> parameters = new HashMap<>();
+    public void run(final ArmInterceptor interceptor, final Consumer<HashMap<String, String>> peeker) {
+        final RemoteBaseClassifier remoteBaseClassifier = new RemoteBaseClassifier(this.remoteBaseClassifierUrl);
+        final HashMap<String, String> parameters = new HashMap<>();
         parameters.put("dataset_filename", this.datasetFilename);
         parameters.put("module", this.module);
         parameters.put("buffer_size", String.valueOf(this.bufferSize));

@@ -15,7 +15,7 @@ public class ArmClusterSummaryDTO implements ArmClusterSummary {
     public ArmClusterSummaryDTO() {
     }
 
-    public ArmClusterSummaryDTO(double[] centroidAttributes, double standardDeviation, Integer label) {
+    public ArmClusterSummaryDTO(final double[] centroidAttributes, final double standardDeviation, final Integer label) {
         this.centroidAttributes = centroidAttributes;
         this.standardDeviation = standardDeviation;
         this.label = label;
@@ -26,7 +26,7 @@ public class ArmClusterSummaryDTO implements ArmClusterSummary {
         return centroidAttributes;
     }
 
-    public void setCentroidAttributes(double[] centroidAttributes) {
+    public void setCentroidAttributes(final double[] centroidAttributes) {
         this.centroidAttributes = centroidAttributes;
     }
 
@@ -35,7 +35,7 @@ public class ArmClusterSummaryDTO implements ArmClusterSummary {
         return standardDeviation;
     }
 
-    public void setStandardDeviation(double standardDeviation) {
+    public void setStandardDeviation(final double standardDeviation) {
         this.standardDeviation = standardDeviation;
     }
 
@@ -44,7 +44,7 @@ public class ArmClusterSummaryDTO implements ArmClusterSummary {
         return label;
     }
 
-    public void setLabel(Integer label) {
+    public void setLabel(final Integer label) {
         this.label = label;
     }
 }

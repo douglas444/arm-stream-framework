@@ -49,11 +49,11 @@ public abstract class AbstractInterceptor implements ArmInterceptor {
                 .distinct()
                 .count() < 2) {
 
-            double oneClassModelCount = this.summary.getBuffer().get("ONE_CLASS_MODEL");
+            final double oneClassModelCount = this.summary.getBuffer().get("ONE_CLASS_MODEL");
             this.summary.getBuffer().put("ONE_CLASS_MODEL", oneClassModelCount + 1);
 
             if (trueCategory == ArmClusterCategory.NOVELTY) {
-                double noveltyCount = this.summary.getBuffer().get("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL");
+                final double noveltyCount = this.summary.getBuffer().get("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL");
                 this.summary.getBuffer().put("TRUE_NOVELTY_WHEN_ONE_CLASS_MODEL", noveltyCount + 1);
             }
         }

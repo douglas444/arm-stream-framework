@@ -23,10 +23,10 @@ public class ArmInterceptionContextDTO implements ArmInterceptionContext {
     public ArmInterceptionContextDTO() {
     }
 
-    public ArmInterceptionContextDTO(ArmClusterSummaryDTO clusterSummary,
-                                     List<ArmDataInstanceDTO> clusterDataInstances,
-                                     ArmClusterCategory predictedCategory,
-                                     List<ArmClusterSummaryDTO> dataClassesSummary) {
+    public ArmInterceptionContextDTO(final ArmClusterSummaryDTO clusterSummary,
+                                     final List<ArmDataInstanceDTO> clusterDataInstances,
+                                     final ArmClusterCategory predictedCategory,
+                                     final List<ArmClusterSummaryDTO> dataClassesSummary) {
         this.clusterSummary = clusterSummary;
         this.clusterDataInstances = clusterDataInstances;
         this.predictedCategory = predictedCategory;
@@ -38,7 +38,7 @@ public class ArmInterceptionContextDTO implements ArmInterceptionContext {
         return clusterSummary;
     }
 
-    public void setClusterSummary(ArmClusterSummaryDTO clusterSummary) {
+    public void setClusterSummary(final ArmClusterSummaryDTO clusterSummary) {
         this.clusterSummary = clusterSummary;
     }
 
@@ -49,7 +49,7 @@ public class ArmInterceptionContextDTO implements ArmInterceptionContext {
                 .collect(Collectors.toList());
     }
 
-    public void setClusterDataInstances(List<ArmDataInstanceDTO> clusterDataInstances) {
+    public void setClusterDataInstances(final List<ArmDataInstanceDTO> clusterDataInstances) {
         this.clusterDataInstances = clusterDataInstances;
     }
 
@@ -58,7 +58,7 @@ public class ArmInterceptionContextDTO implements ArmInterceptionContext {
         return predictedCategory;
     }
 
-    public void setPredictedCategory(ArmClusterCategory predictedCategory) {
+    public void setPredictedCategory(final ArmClusterCategory predictedCategory) {
         this.predictedCategory = predictedCategory;
     }
 
@@ -69,7 +69,7 @@ public class ArmInterceptionContextDTO implements ArmInterceptionContext {
                 .collect(Collectors.toList());
     }
 
-    public void setDataClassesSummary(List<ArmClusterSummaryDTO> dataClassesSummary) {
+    public void setDataClassesSummary(final List<ArmClusterSummaryDTO> dataClassesSummary) {
         this.dataClassesSummary = dataClassesSummary;
     }
 }
