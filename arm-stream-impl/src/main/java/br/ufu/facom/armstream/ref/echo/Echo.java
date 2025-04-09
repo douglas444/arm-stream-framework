@@ -31,10 +31,6 @@ public class Echo {
     private double totalInterceptionTimeInMillis;
     private int updatesCount;
 
-    private double interceptedClusterSizeSum;
-    private double dataClassSummarySizeSum;
-    private int interceptionsCount;
-
     private final HashMap<Integer, StatElement> stat;
     private final List<Sample> filteredOutlierBuffer;
     private final List<Model> ensemble;
@@ -417,9 +413,6 @@ public class Echo {
 
                     final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                     this.totalInterceptionTimeInMillis += interceptionDuration;
-                    this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-                    this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
-                    ++this.interceptionsCount;
 
                     if (result.getPrediction() == NOVELTY) {
                         this.addNovelty(cluster);
@@ -474,9 +467,6 @@ public class Echo {
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                 this.totalInterceptionTimeInMillis += interceptionDuration;
-                this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-                this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
-                ++this.interceptionsCount;
 
                 if (result.getPrediction() == NOVELTY) {
                     this.addNovelty(cluster);
@@ -624,9 +614,6 @@ public class Echo {
 
                 final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
                 this.totalInterceptionTimeInMillis += interceptionDuration;
-                this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-                this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
-                ++this.interceptionsCount;
 
                 if (result.getPrediction() == context.getPredictedCategory()) {
                     pseudoPoints.add(new PseudoPoint(cluster));
@@ -755,18 +742,6 @@ public class Echo {
 
     public double getInterceptionAverageTimeOverhead() {
         return this.totalInterceptionTimeInMillis / this.totalUpdateTimeInMillis;
-    }
-
-    public double getAverageDataClassSummarySize() {
-        return this.dataClassSummarySizeSum / this.interceptionsCount;
-    }
-
-    public double getAverageInterceptedClusterSize() {
-        return this.interceptedClusterSizeSum / this.interceptionsCount;
-    }
-
-    public double getAverageInterceptionTime() {
-        return this.totalInterceptionTimeInMillis / this.interceptionsCount;
     }
 
 }

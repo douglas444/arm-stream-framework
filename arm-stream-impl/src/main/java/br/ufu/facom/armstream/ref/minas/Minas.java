@@ -25,10 +25,6 @@ public class Minas {
     private double totalInterceptionTimeInMillis;
     private int updatesCount;
 
-    private double interceptedClusterSizeSum;
-    private double dataClassSummarySizeSum;
-    private int interceptionsCount;
-
     private final DecisionModel decisionModel;
     private final List<Sample> temporaryMemory;
     private final DecisionModel sleepMemory;
@@ -188,9 +184,6 @@ public class Minas {
 
             final double interceptionDuration = System.currentTimeMillis() - interceptionBegin;
             this.totalInterceptionTimeInMillis += interceptionDuration;
-            this.dataClassSummarySizeSum += context.getDataClassesSummary().size();
-            this.interceptedClusterSizeSum += context.getClusterDataInstances().size();
-            ++this.interceptionsCount;
 
         }
 
@@ -337,18 +330,6 @@ public class Minas {
 
     public double getInterceptionAverageTimeOverhead() {
         return this.totalInterceptionTimeInMillis / this.totalUpdateTimeInMillis;
-    }
-
-    public double getAverageDataClassSummarySize() {
-        return this.dataClassSummarySizeSum / this.interceptionsCount;
-    }
-
-    public double getAverageClusterSizePerInterception() {
-        return this.interceptedClusterSizeSum / this.interceptionsCount;
-    }
-
-    public double getAverageInterceptionTime() {
-        return this.totalInterceptionTimeInMillis / this.interceptionsCount;
     }
 
 }

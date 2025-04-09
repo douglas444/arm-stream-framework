@@ -75,9 +75,6 @@ public class ArmEcho implements ArmBaseClassifier, Cloneable {
 
             properties.put("avgUpdateTime", String.valueOf(echo.getAverageUpdateTimeInMillis()));
             properties.put("avgInterceptionOverhead", String.valueOf(echo.getInterceptionAverageTimeOverhead()));
-            properties.put("avgClassSummarySize", String.valueOf(echo.getAverageDataClassSummarySize()));
-            properties.put("avgInterceptedClusterSize", String.valueOf(echo.getAverageInterceptedClusterSize()));
-            properties.put("avgInterceptionTime", String.valueOf(echo.getAverageInterceptionTime()));
 
             peeker.accept(properties);
         });
