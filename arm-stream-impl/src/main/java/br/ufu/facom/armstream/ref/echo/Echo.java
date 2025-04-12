@@ -740,7 +740,7 @@ public class Echo {
         return this.totalUpdateTimeInMillis / this.updatesCount;
     }
 
-    public double getInterceptionAverageTimeOverhead() {
+    public double getAverageUpdateTimeOverheadRate() {
         return this.totalInterceptionTimeInMillis / this.totalUpdateTimeInMillis;
     }
 
